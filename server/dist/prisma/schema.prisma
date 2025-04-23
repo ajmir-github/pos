@@ -1,0 +1,162 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  // url      = env("DATABASE_URL")
+  url      = "file:./dev.db"
+}
+
+// -------------------- Section One: User Model 
+
+enum UserRole {
+  admin
+  manager
+  cashier
+  waiter
+  kitchen
+}
+
+model User {
+  id       Int       @id @default(autoincrement())
+  username String    @unique
+  password String
+  fullName String
+  role     UserRole
+  // relationships
+  orders   Order[]
+  payments Payment[]
+
+  // index
+  @@index([username])
+}
+
+model Color {
+  id    Int    @id @default(autoincrement())
+  name  String
+  class String
+  // relationships
+  items Item[]
+}
+
+// -------------------- Section Two: Item Model 
+
+model Category {
+  id    Int    @id @default(autoincrement())
+  name  String
+  // relationships
+  items Item[]
+}
+
+model ModifierOption {
+  id         Int         @id @default(autoincrement())
+  name       String
+  price      Float
+  // relationships
+  modifiers  Modifier[]  @relation("ModifierOptionsOnModifers") // many-to-many
+  orderItems OrderItem[] @relation("modifierOptionsOnOrderItem") // many-to-many
+}
+
+model Modifier {
+  id              Int              @id @default(autoincrement())
+  name            String
+  multiple        Boolean
+  required        Boolean
+  // relationships
+  modifierOptions ModifierOption[] @relation("ModifierOptionsOnModifers") // many-to-many
+}
+
+model Item {
+  id         Int         @id @default(autoincrement())
+  name       String
+  price      Float
+  // relationships
+  colorId    Int
+  color      Color       @relation(fields: [colorId], references: [id])
+  categoryId Int
+  category   Category    @relation(fields: [categoryId], references: [id])
+  orderItems OrderItem[]
+}
+
+// -------------------- Section Three: Tab Model 
+
+enum discountType {
+  unset
+  fixed
+  percentage
+}
+
+enum TabStatus {
+  open
+  paying
+}
+
+model Tab {
+  id            Int          @id @default(autoincrement())
+  tableNumber   Int
+  number        Int
+  description   String? // area or customer name
+  discountType  discountType @default(unset)
+  discountValue Float        @default(0)
+  totalOfOrders Float
+  total         Float // totalOfOrders + discount
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  // relationships
+  orders        Order[]
+}
+
+enum OrderStatus {
+  drafted
+  sent
+  cancelled
+}
+
+model Order {
+  id         Int         @id @default(autoincrement())
+  status     OrderStatus @default(drafted)
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  // relationships
+  userId     Int
+  user       User        @relation(fields: [userId], references: [id])
+  orderItems OrderItem[]
+  tab        Tab         @relation(fields: [tabId], references: [id])
+  tabId      Int
+}
+
+model OrderItem {
+  id              Int              @id @default(autoincrement())
+  quantity        Int
+  price           Float // per item
+  total           Float
+  // relationships
+  orderId         Int
+  order           Order            @relation(fields: [orderId], references: [id])
+  itemId          Int
+  item            Item             @relation(fields: [itemId], references: [id])
+  modifierOptions ModifierOption[] @relation("modifierOptionsOnOrderItem") // many-to-many
+}
+
+enum PaymentMethod {
+  cash
+  card
+  mixed
+}
+
+model Payment {
+  id          Int           @id @default(autoincrement())
+  tableNumber Int
+  tabNumber   Int
+  amountCash  Float
+  amountCard  Float
+  total       Float
+  method      PaymentMethod
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  // Relationships
+  userId      Int
+  user        User          @relation(fields: [userId], references: [id])
+}
