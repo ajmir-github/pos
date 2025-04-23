@@ -1,4 +1,4 @@
-import { PrismaClient } from "./prisma";
-export type * from "./prisma";
+import { PrismaClient } from "../prisma/src";
+export type * from "../prisma/src";
 
 export const database = new PrismaClient();

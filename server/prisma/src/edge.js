@@ -233,7 +233,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Users\\LENOVO\\Desktop\\programming\\pos\\server\\src\\prisma",
+      "value": "C:\\Users\\LENOVO\\Desktop\\programming\\pos\\server\\prisma\\src",
       "fromEnvVar": null
     },
     "config": {
@@ -251,26 +251,27 @@ const config = {
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": null,
+    "rootEnvPath": "../../.env",
     "schemaEnvPath": "../../.env"
   },
-  "relativePath": "../../prisma",
+  "relativePath": "..",
   "clientVersion": "6.6.0",
   "engineVersion": "f676762280b54cd07c770017ed3711ddde35f37a",
   "datasourceNames": [
     "db"
   ],
   "activeProvider": "sqlite",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
-        "fromEnvVar": "DATABASE_URL",
+        "fromEnvVar": null,
         "value": "file:./dev.db"
       }
     }
   },
-  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/prisma\"\n}\n\ndatasource db {\n  provider = \"sqlite\"\n  url      = env(\"DATABASE_URL\")\n}\n\n// -------------------- Section One: User Model \n\nenum UserRole {\n  admin\n  manager\n  cashier\n  waiter\n  kitchen\n}\n\nmodel User {\n  id       Int       @id @default(autoincrement())\n  username String    @unique\n  password String\n  fullName String\n  role     UserRole\n  // relationships\n  orders   Order[]\n  payments Payment[]\n\n  // index\n  @@index([username])\n}\n\nmodel Color {\n  id    Int    @id @default(autoincrement())\n  name  String\n  class String\n  // relationships\n  items Item[]\n}\n\n// -------------------- Section Two: Item Model \n\nmodel Category {\n  id    Int    @id @default(autoincrement())\n  name  String\n  // relationships\n  items Item[]\n}\n\nmodel ModifierOption {\n  id         Int         @id @default(autoincrement())\n  name       String\n  price      Float\n  // relationships\n  modifiers  Modifier[]  @relation(\"ModifierOptionsOnModifers\") // many-to-many\n  orderItems OrderItem[] @relation(\"modifierOptionsOnOrderItem\") // many-to-many\n}\n\nmodel Modifier {\n  id              Int              @id @default(autoincrement())\n  name            String\n  multiple        Boolean\n  required        Boolean\n  // relationships\n  modifierOptions ModifierOption[] @relation(\"ModifierOptionsOnModifers\") // many-to-many\n}\n\nmodel Item {\n  id         Int         @id @default(autoincrement())\n  name       String\n  price      Float\n  // relationships\n  colorId    Int\n  color      Color       @relation(fields: [colorId], references: [id])\n  categoryId Int\n  category   Category    @relation(fields: [categoryId], references: [id])\n  orderItems OrderItem[]\n}\n\n// -------------------- Section Three: Tab Model \n\nenum discountType {\n  unset\n  fixed\n  percentage\n}\n\nenum TabStatus {\n  open\n  paying\n}\n\nmodel Tab {\n  id            Int          @id @default(autoincrement())\n  tableNumber   Int\n  number        Int\n  description   String? // area or customer name\n  discountType  discountType @default(unset)\n  discountValue Float        @default(0)\n  totalOfOrders Float\n  total         Float // totalOfOrders + discount\n  createdAt     DateTime     @default(now())\n  updatedAt     DateTime     @updatedAt\n  // relationships\n  orders        Order[]\n}\n\nenum OrderStatus {\n  drafted\n  sent\n  cancelled\n}\n\nmodel Order {\n  id         Int         @id @default(autoincrement())\n  status     OrderStatus @default(drafted)\n  createdAt  DateTime    @default(now())\n  updatedAt  DateTime    @updatedAt\n  // relationships\n  userId     Int\n  user       User        @relation(fields: [userId], references: [id])\n  orderItems OrderItem[]\n  tab        Tab         @relation(fields: [tabId], references: [id])\n  tabId      Int\n}\n\nmodel OrderItem {\n  id              Int              @id @default(autoincrement())\n  quantity        Int\n  price           Float // per item\n  total           Float\n  // relationships\n  orderId         Int\n  order           Order            @relation(fields: [orderId], references: [id])\n  itemId          Int\n  item            Item             @relation(fields: [itemId], references: [id])\n  modifierOptions ModifierOption[] @relation(\"modifierOptionsOnOrderItem\") // many-to-many\n}\n\nenum PaymentMethod {\n  cash\n  card\n  mixed\n}\n\nmodel Payment {\n  id          Int           @id @default(autoincrement())\n  tableNumber Int\n  tabNumber   Int\n  amountCash  Float\n  amountCard  Float\n  total       Float\n  method      PaymentMethod\n  createdAt   DateTime      @default(now())\n  updatedAt   DateTime      @updatedAt\n  // Relationships\n  userId      Int\n  user        User          @relation(fields: [userId], references: [id])\n}\n",
-  "inlineSchemaHash": "026a174774fd11d6f790e8507abae74a1e6c91e63efc12faccd26eebda8dc08c",
+  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"./src\"\n}\n\ndatasource db {\n  provider = \"sqlite\"\n  // url      = env(\"DATABASE_URL\")\n  url      = \"file:./dev.db\"\n}\n\n// -------------------- Section One: User Model \n\nenum UserRole {\n  admin\n  manager\n  cashier\n  waiter\n  kitchen\n}\n\nmodel User {\n  id       Int       @id @default(autoincrement())\n  username String    @unique\n  password String\n  fullName String\n  role     UserRole\n  // relationships\n  orders   Order[]\n  payments Payment[]\n\n  // index\n  @@index([username])\n}\n\nmodel Color {\n  id    Int    @id @default(autoincrement())\n  name  String\n  class String\n  // relationships\n  items Item[]\n}\n\n// -------------------- Section Two: Item Model \n\nmodel Category {\n  id    Int    @id @default(autoincrement())\n  name  String\n  // relationships\n  items Item[]\n}\n\nmodel ModifierOption {\n  id         Int         @id @default(autoincrement())\n  name       String\n  price      Float\n  // relationships\n  modifiers  Modifier[]  @relation(\"ModifierOptionsOnModifers\") // many-to-many\n  orderItems OrderItem[] @relation(\"modifierOptionsOnOrderItem\") // many-to-many\n}\n\nmodel Modifier {\n  id              Int              @id @default(autoincrement())\n  name            String\n  multiple        Boolean\n  required        Boolean\n  // relationships\n  modifierOptions ModifierOption[] @relation(\"ModifierOptionsOnModifers\") // many-to-many\n}\n\nmodel Item {\n  id         Int         @id @default(autoincrement())\n  name       String\n  price      Float\n  // relationships\n  colorId    Int\n  color      Color       @relation(fields: [colorId], references: [id])\n  categoryId Int\n  category   Category    @relation(fields: [categoryId], references: [id])\n  orderItems OrderItem[]\n}\n\n// -------------------- Section Three: Tab Model \n\nenum discountType {\n  unset\n  fixed\n  percentage\n}\n\nenum TabStatus {\n  open\n  paying\n}\n\nmodel Tab {\n  id            Int          @id @default(autoincrement())\n  tableNumber   Int\n  number        Int\n  description   String? // area or customer name\n  discountType  discountType @default(unset)\n  discountValue Float        @default(0)\n  totalOfOrders Float\n  total         Float // totalOfOrders + discount\n  createdAt     DateTime     @default(now())\n  updatedAt     DateTime     @updatedAt\n  // relationships\n  orders        Order[]\n}\n\nenum OrderStatus {\n  drafted\n  sent\n  cancelled\n}\n\nmodel Order {\n  id         Int         @id @default(autoincrement())\n  status     OrderStatus @default(drafted)\n  createdAt  DateTime    @default(now())\n  updatedAt  DateTime    @updatedAt\n  // relationships\n  userId     Int\n  user       User        @relation(fields: [userId], references: [id])\n  orderItems OrderItem[]\n  tab        Tab         @relation(fields: [tabId], references: [id])\n  tabId      Int\n}\n\nmodel OrderItem {\n  id              Int              @id @default(autoincrement())\n  quantity        Int\n  price           Float // per item\n  total           Float\n  // relationships\n  orderId         Int\n  order           Order            @relation(fields: [orderId], references: [id])\n  itemId          Int\n  item            Item             @relation(fields: [itemId], references: [id])\n  modifierOptions ModifierOption[] @relation(\"modifierOptionsOnOrderItem\") // many-to-many\n}\n\nenum PaymentMethod {\n  cash\n  card\n  mixed\n}\n\nmodel Payment {\n  id          Int           @id @default(autoincrement())\n  tableNumber Int\n  tabNumber   Int\n  amountCash  Float\n  amountCard  Float\n  total       Float\n  method      PaymentMethod\n  createdAt   DateTime      @default(now())\n  updatedAt   DateTime      @updatedAt\n  // Relationships\n  userId      Int\n  user        User          @relation(fields: [userId], references: [id])\n}\n",
+  "inlineSchemaHash": "0b8cca3872f386c6980a9ef460ff3ec1ae02a08e54dbfca8dd5f9df725b61e78",
   "copyEngine": true
 }
 config.dirname = '/'
@@ -281,9 +282,7 @@ config.engineWasm = undefined
 config.compilerWasm = undefined
 
 config.injectableEdgeEnv = () => ({
-  parsed: {
-    DATABASE_URL: typeof globalThis !== 'undefined' && globalThis['DATABASE_URL'] || typeof process !== 'undefined' && process.env && process.env.DATABASE_URL || undefined
-  }
+  parsed: {}
 })
 
 if (typeof globalThis !== 'undefined' && globalThis['DEBUG'] || typeof process !== 'undefined' && process.env && process.env.DEBUG || undefined) {
