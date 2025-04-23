@@ -4,12 +4,12 @@ import { Server } from "socket.io";
 import cors from "cors";
 export type { ServerToClientEvents } from "./types";
 import { corsOptions, env } from "./constants";
-import { socketHandler, rootRouter } from "./controllers";
-import { InferRouter } from "./utils/socketContext";
+import { appRouter, socketHandler } from "./controllers";
+import { InferRouter } from "./utils/socketServer";
 import getLocalIP from "./utils/getLocalIP";
-export type * from "./prisma";
+export type * from "./database";
 
-export type ClientToServerEvents = InferRouter<typeof rootRouter>;
+export type ClientToServerEvents = InferRouter<typeof appRouter>;
 
 const app = express();
 app.use(cors(corsOptions));

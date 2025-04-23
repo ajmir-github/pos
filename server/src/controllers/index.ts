@@ -1,9 +1,10 @@
 import { SocketType } from "../types";
-import { joinRouters, registerRouter } from "../utils/socketContext";
+import { createAppRouter, registerAppRouter } from "../utils/socketServer";
 import { userRouter } from "./userRouter";
 import { authRouter } from "./authRouter";
+import { tabRouter } from "./tabRouter";
 
-export const rootRouter = joinRouters(authRouter, userRouter);
+export const appRouter = createAppRouter(authRouter, userRouter, tabRouter);
 
 export async function socketHandler(socket: SocketType) {
   socket.data = {
@@ -11,5 +12,5 @@ export async function socketHandler(socket: SocketType) {
   };
 
   // register all the routes
-  registerRouter(socket, rootRouter);
+  registerAppRouter(socket, appRouter);
 }

@@ -1,14 +1,17 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authState from "./authState";
+import tabState from "./tabState";
 import { useDispatch, useSelector, useStore } from "react-redux";
 
 export const store = configureStore({
   reducer: {
     auth: authState.reducer,
+    tab: tabState.reducer,
   },
 });
 
 export const authActions = authState.actions;
+export const tabActions = tabState.actions;
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>;

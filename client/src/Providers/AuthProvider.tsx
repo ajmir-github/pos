@@ -11,22 +11,30 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
   const authenticate = () => {
     if (!hasLocalToken()) return setLoading(false);
     socket.emit("getAuth", (response) => {
-      if (response.success) {
+      if (response.data) {
         dispatch(authActions.setAuth(response.data));
         return setLoading(false);
       }
-      if (response.error.type === "Authentication") {
+      if (response.error) {
         clearLocalToken();
         return setLoading(false);
       }
       // else
-      console.error(response.error);
+      console.error(response);
       return setLoading(false);
     });
   };
 
   useEffect(() => {
     authenticate();
+
+    socket.on("auth", (auth) =>
+      dispatch(auth ? authActions.setAuth(auth) : authActions.clearAuth())
+    );
+
+    return () => {
+      socket.off("auth");
+    };
   }, []);
 
   return isLoading ? <LoadingPage message="Autheticating" /> : children;

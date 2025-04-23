@@ -1,33 +1,26 @@
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect } from "react";
 import socket from "../socket";
-import { useAppDispatch, authActions } from "../state";
-import { clearLocalToken, hasLocalToken } from "../utils/localToken";
+import { useAppDispatch, tabActions, useAppSelector } from "../state";
 import LoadingPage from "../components/LoadingPage";
 
 export default function TabProvider({ children }: { children: ReactNode }) {
-  const [isLoading, setLoading] = useState(true);
+  const { status } = useAppSelector((state) => state.tab);
   const dispatch = useAppDispatch();
 
-  const authenticate = () => {
-    if (!hasLocalToken()) return setLoading(false);
-    socket.emit("getAuth", (response) => {
-      if (response.success) {
-        dispatch(authActions.setAuth(response.data));
-        return setLoading(false);
-      }
-      if (response.error.type === "Authentication") {
-        clearLocalToken();
-        return setLoading(false);
-      }
+  const getTabs = () => {
+    socket.emit("getTabs", (response) => {
+      if (response.success) return dispatch(tabActions.loadTabs(response.data));
       // else
+      dispatch(tabActions.clearTabs());
       console.error(response.error);
-      return setLoading(false);
     });
   };
 
   useEffect(() => {
-    authenticate();
+    getTabs();
   }, []);
 
-  return isLoading ? <LoadingPage message="Loading Tables" /> : children;
+  if (status === "loading") return <LoadingPage message="Loading Tables" />;
+  if (status === "error") return <LoadingPage message="error!" />;
+  return children;
 }

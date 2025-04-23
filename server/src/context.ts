@@ -1,4 +1,4 @@
-import { createContext } from "./utils/socketContext";
+import { createContext } from "./utils/socketServer";
 import { User } from "./database";
 import jwt from "jsonwebtoken";
 import { env } from "./constants";

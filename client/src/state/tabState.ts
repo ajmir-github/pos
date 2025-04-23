@@ -1,23 +1,36 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Tab } from "../types/server";
 
-const initialState: Tab[] = [];
+type TabState = {
+  status: "idle" | "loading" | "error";
+  tabs: Tab[];
+};
+const initialState: TabState = {
+  status: "loading",
+  tabs: [],
+};
 
 export default createSlice({
-  name: "tabs",
+  name: "tab",
   initialState,
   reducers: {
-    loadTabs: (_, { payload }: PayloadAction<Tab[]>) => {
-      return payload;
+    loadTabs: (state, { payload }: PayloadAction<Tab[]>) => {
+      state.status = "idle";
+      state.tabs = payload;
     },
     updateTab: (state, { payload }: PayloadAction<Tab>) => {
-      return state.map((tab) => (tab.id === payload.id ? payload : tab));
+      state.status = "idle";
+      state.tabs = state.tabs.map((tab) =>
+        tab.id === payload.id ? payload : tab
+      );
     },
     deleteTab: (state, { payload }: PayloadAction<{ id: number }>) => {
-      return state.filter((tab) => tab.id !== payload.id);
+      state.status = "idle";
+      state.tabs = state.tabs.filter((tab) => tab.id !== payload.id);
     },
-    clearTabs: (_) => {
-      return [];
+    clearTabs: (state) => {
+      state.status = "idle";
+      state.tabs = [];
     },
   },
 });

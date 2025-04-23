@@ -24,22 +24,20 @@ export default function LoginPage() {
   });
   const onSubmit: SubmitHandler<Inputs> = (data) =>
     socket.emit("signIn", data, (response) => {
-      if (response.success) {
-        console.log(response);
+      if (response.data) {
         setLocalToken(response.data.token);
         dispatch(authActions.setAuth(response.data.user));
         return;
       }
-      if (response.error.type === "Validation") {
-        for (const { path, message } of response.error.errors) {
+      if (response.error) {
+        for (const { path, message } of response.error) {
           setError(path[0] as keyof Inputs, {
             message,
           });
         }
-
         return;
       }
-      console.error(response.error);
+      console.error(response);
     });
 
   return (
