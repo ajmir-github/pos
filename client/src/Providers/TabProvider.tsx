@@ -12,7 +12,7 @@ export default function TabProvider({ children }: { children: ReactNode }) {
       if (response.success) return dispatch(tabActions.loadTabs(response.data));
       // else
       dispatch(tabActions.clearTabs());
-      console.error(response.error);
+      console.error(response);
     });
   };
 
