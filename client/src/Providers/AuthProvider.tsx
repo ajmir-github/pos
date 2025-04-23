@@ -2,14 +2,9 @@ import { ReactNode, useEffect, useState } from "react";
 import socket from "../socket";
 import { useAppDispatch, authActions } from "../state";
 import { clearLocalToken, hasLocalToken } from "../utils/localToken";
+import LoadingPage from "../components/LoadingPage";
 
-export default function AuthProvider({
-  children,
-  loading,
-}: {
-  children: ReactNode;
-  loading: ReactNode;
-}) {
+export default function AuthProvider({ children }: { children: ReactNode }) {
   const [isLoading, setLoading] = useState(true);
   const dispatch = useAppDispatch();
 
@@ -29,9 +24,10 @@ export default function AuthProvider({
       return setLoading(false);
     });
   };
+
   useEffect(() => {
     authenticate();
   }, []);
 
-  return isLoading ? loading : children;
+  return isLoading ? <LoadingPage message="Autheticating" /> : children;
 }
