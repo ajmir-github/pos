@@ -11,13 +11,15 @@ import {
 import { Link } from "react-router";
 import { authActions, useAppDispatch } from "../state";
 import { clearLocalToken } from "../utils/localToken";
+import socket from "../socket";
 
 export default function Sidebar() {
   const dispatch = useAppDispatch();
-  const handleLogOut = () => {
-    clearLocalToken();
-    dispatch(authActions.clearAuth());
-  };
+  const handleLogOut = () =>
+    socket.emit("signOut", () => {
+      clearLocalToken();
+      dispatch(authActions.clearAuth());
+    });
   return (
     <div className="flex flex-col justify-between h-full text-xs md:text-base gap-2">
       <div className="flex flex-col items-stretch gap-2">

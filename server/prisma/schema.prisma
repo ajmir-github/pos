@@ -28,6 +28,8 @@ model User {
   // relationships
   orders   Order[]
   payments Payment[]
+  tables   Table[]
+  tabs     Tab[]
 
   // index
   @@index([username])
@@ -88,24 +90,40 @@ enum discountType {
   percentage
 }
 
-enum TabStatus {
+enum TableStatus {
   open
+  closed
   paying
 }
 
-model Tab {
+model Table {
   id            Int          @id @default(autoincrement())
-  tableNumber   Int
   number        Int
-  description   String? // area or customer name
+  status        TableStatus
   discountType  discountType @default(unset)
   discountValue Float        @default(0)
-  totalOfOrders Float
-  total         Float // totalOfOrders + discount
+  total         Float
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
   // relationships
-  orders        Order[]
+  createdById   Int
+  createdBy     User         @relation(fields: [createdById], references: [id])
+  tabs          Tab[]
+}
+
+model Tab {
+  id          Int      @id @default(autoincrement())
+  number      Int
+  description String?
+  total       Float
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  // relationships
+  createdById Int
+  createdBy   User     @relation(fields: [createdById], references: [id])
+  tableId     Int
+  table       Table    @relation(fields: [tableId], references: [id])
+  orders      Order[]
 }
 
 enum OrderStatus {

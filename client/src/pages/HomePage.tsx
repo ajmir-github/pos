@@ -1,6 +1,8 @@
 import { LayersIcon, PercentIcon } from "lucide-react";
 import { Link } from "react-router";
 import { classes, conditionalClasses } from "../utils/css";
+import { useAppSelector } from "../state";
+import { Tab } from "../types/server";
 
 enum TableStatus {
   open = "open",
@@ -8,16 +10,18 @@ enum TableStatus {
   paying = "paying",
 }
 
-function TableComponent({ tableNumber }: { tableNumber: number }) {
-  const table = {
-    tableNumber,
-    multiplyTabs: true,
-    hasDiscount: true,
-    status: TableStatus.closed,
-  };
+interface Table {
+  tableNumber: number;
+  status: TableStatus;
+  multiplyTabs: boolean;
+  hasDiscount: boolean;
+  createdAt: Date;
+}
+
+function TableComponent({ table }: { table: Table }) {
   return (
     <Link
-      to={`/table/${tableNumber}`}
+      to={`/table/${table.tableNumber}`}
       className={classes(
         "rounded aspect-square flex justify-center items-center flex-col",
         conditionalClasses(
@@ -31,9 +35,9 @@ function TableComponent({ tableNumber }: { tableNumber: number }) {
         )
       )}
     >
-      {table.status !== TableStatus.closed && (
-        <div className="text-xs">1:20 PM</div>
-      )}
+      {/* {table.status !== TableStatus.closed && (
+        <div className="text-xs">{table.createdAt.getTime()}</div>
+      )} */}
       <div className="text-base sm:text-xl font-bold">{table.tableNumber}</div>
       {table.status !== TableStatus.closed && (
         <div className="flex justify-around w-full">
@@ -45,20 +49,31 @@ function TableComponent({ tableNumber }: { tableNumber: number }) {
   );
 }
 
-function generateTables() {
+function getTables(tabs: Tab[]) {
   const tables: number[] = [];
   for (let index = 1; index <= 100; index++) {
     tables.push(index);
   }
-  return tables;
+  return tables.map((tableNumber) => {
+    const tableTabs = tabs.filter((tab) => tab.tableNumber === tableNumber);
+    return {
+      tableNumber,
+      status: tableTabs.length === 0 ? TableStatus.closed : TableStatus.open,
+      createdAt: tableTabs.find((a) => a.createdAt)?.createdAt || Date.now(),
+      multiplyTabs: tableTabs.length > 1,
+      hasDiscount:
+        tableTabs.length !== 0 &&
+        tableTabs.some((tab) => tab.discountType !== "unset"),
+    } as Table;
+  });
 }
 
 export default function HomePage() {
-  const tables = generateTables();
+  const tables = useAppSelector((state) => getTables(state.tab));
   return (
     <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 xl:grid-cols-12 gap-2 ">
-      {tables.map((tableNumber) => (
-        <TableComponent key={tableNumber} tableNumber={tableNumber} />
+      {tables.map((table) => (
+        <TableComponent key={table.tableNumber} table={table} />
       ))}
     </div>
   );

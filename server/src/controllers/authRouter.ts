@@ -82,9 +82,13 @@ const signIn = baseContext.resolveWithInput(
   }
 );
 
-// sign up
+// sign out
+const signOut = baseContext.resolve((context) => {
+  return context.clearAuth();
+});
 
 export const authRouter = createRouter({
   getAuth,
   signIn,
+  signOut,
 });
