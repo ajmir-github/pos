@@ -44,6 +44,11 @@ export type Modifier = $Result.DefaultSelection<Prisma.$ModifierPayload>
  */
 export type Item = $Result.DefaultSelection<Prisma.$ItemPayload>
 /**
+ * Model Table
+ * 
+ */
+export type Table = $Result.DefaultSelection<Prisma.$TablePayload>
+/**
  * Model Tab
  * 
  */
@@ -88,12 +93,13 @@ export const discountType: {
 export type discountType = (typeof discountType)[keyof typeof discountType]
 
 
-export const TabStatus: {
+export const TableStatus: {
   open: 'open',
+  closed: 'closed',
   paying: 'paying'
 };
 
-export type TabStatus = (typeof TabStatus)[keyof typeof TabStatus]
+export type TableStatus = (typeof TableStatus)[keyof typeof TableStatus]
 
 
 export const OrderStatus: {
@@ -123,9 +129,9 @@ export type discountType = $Enums.discountType
 
 export const discountType: typeof $Enums.discountType
 
-export type TabStatus = $Enums.TabStatus
+export type TableStatus = $Enums.TableStatus
 
-export const TabStatus: typeof $Enums.TabStatus
+export const TableStatus: typeof $Enums.TableStatus
 
 export type OrderStatus = $Enums.OrderStatus
 
@@ -319,6 +325,16 @@ export class PrismaClient<
     * ```
     */
   get item(): Prisma.ItemDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.table`: Exposes CRUD operations for the **Table** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Tables
+    * const tables = await prisma.table.findMany()
+    * ```
+    */
+  get table(): Prisma.TableDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.tab`: Exposes CRUD operations for the **Tab** model.
@@ -805,6 +821,7 @@ export namespace Prisma {
     ModifierOption: 'ModifierOption',
     Modifier: 'Modifier',
     Item: 'Item',
+    Table: 'Table',
     Tab: 'Tab',
     Order: 'Order',
     OrderItem: 'OrderItem',
@@ -827,7 +844,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "color" | "category" | "modifierOption" | "modifier" | "item" | "tab" | "order" | "orderItem" | "payment"
+      modelProps: "user" | "color" | "category" | "modifierOption" | "modifier" | "item" | "table" | "tab" | "order" | "orderItem" | "payment"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1275,6 +1292,80 @@ export namespace Prisma {
           }
         }
       }
+      Table: {
+        payload: Prisma.$TablePayload<ExtArgs>
+        fields: Prisma.TableFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.TableFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TablePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.TableFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TablePayload>
+          }
+          findFirst: {
+            args: Prisma.TableFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TablePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.TableFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TablePayload>
+          }
+          findMany: {
+            args: Prisma.TableFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TablePayload>[]
+          }
+          create: {
+            args: Prisma.TableCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TablePayload>
+          }
+          createMany: {
+            args: Prisma.TableCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.TableCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TablePayload>[]
+          }
+          delete: {
+            args: Prisma.TableDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TablePayload>
+          }
+          update: {
+            args: Prisma.TableUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TablePayload>
+          }
+          deleteMany: {
+            args: Prisma.TableDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.TableUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.TableUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TablePayload>[]
+          }
+          upsert: {
+            args: Prisma.TableUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TablePayload>
+          }
+          aggregate: {
+            args: Prisma.TableAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateTable>
+          }
+          groupBy: {
+            args: Prisma.TableGroupByArgs<ExtArgs>
+            result: $Utils.Optional<TableGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.TableCountArgs<ExtArgs>
+            result: $Utils.Optional<TableCountAggregateOutputType> | number
+          }
+        }
+      }
       Tab: {
         payload: Prisma.$TabPayload<ExtArgs>
         fields: Prisma.TabFieldRefs
@@ -1661,6 +1752,7 @@ export namespace Prisma {
     modifierOption?: ModifierOptionOmit
     modifier?: ModifierOmit
     item?: ItemOmit
+    table?: TableOmit
     tab?: TabOmit
     order?: OrderOmit
     orderItem?: OrderItemOmit
@@ -1761,11 +1853,15 @@ export namespace Prisma {
   export type UserCountOutputType = {
     orders: number
     payments: number
+    tables: number
+    tabs: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     orders?: boolean | UserCountOutputTypeCountOrdersArgs
     payments?: boolean | UserCountOutputTypeCountPaymentsArgs
+    tables?: boolean | UserCountOutputTypeCountTablesArgs
+    tabs?: boolean | UserCountOutputTypeCountTabsArgs
   }
 
   // Custom InputTypes
@@ -1791,6 +1887,20 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountPaymentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: PaymentWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountTablesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TableWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountTabsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TabWhereInput
   }
 
 
@@ -1955,6 +2065,37 @@ export namespace Prisma {
    */
   export type ItemCountOutputTypeCountOrderItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: OrderItemWhereInput
+  }
+
+
+  /**
+   * Count Type TableCountOutputType
+   */
+
+  export type TableCountOutputType = {
+    tabs: number
+  }
+
+  export type TableCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    tabs?: boolean | TableCountOutputTypeCountTabsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * TableCountOutputType without action
+   */
+  export type TableCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TableCountOutputType
+     */
+    select?: TableCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * TableCountOutputType without action
+   */
+  export type TableCountOutputTypeCountTabsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TabWhereInput
   }
 
 
@@ -2255,6 +2396,8 @@ export namespace Prisma {
     role?: boolean
     orders?: boolean | User$ordersArgs<ExtArgs>
     payments?: boolean | User$paymentsArgs<ExtArgs>
+    tables?: boolean | User$tablesArgs<ExtArgs>
+    tabs?: boolean | User$tabsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -2286,6 +2429,8 @@ export namespace Prisma {
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     orders?: boolean | User$ordersArgs<ExtArgs>
     payments?: boolean | User$paymentsArgs<ExtArgs>
+    tables?: boolean | User$tablesArgs<ExtArgs>
+    tabs?: boolean | User$tabsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -2296,6 +2441,8 @@ export namespace Prisma {
     objects: {
       orders: Prisma.$OrderPayload<ExtArgs>[]
       payments: Prisma.$PaymentPayload<ExtArgs>[]
+      tables: Prisma.$TablePayload<ExtArgs>[]
+      tabs: Prisma.$TabPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -2699,6 +2846,8 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     orders<T extends User$ordersArgs<ExtArgs> = {}>(args?: Subset<T, User$ordersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     payments<T extends User$paymentsArgs<ExtArgs> = {}>(args?: Subset<T, User$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    tables<T extends User$tablesArgs<ExtArgs> = {}>(args?: Subset<T, User$tablesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TablePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    tabs<T extends User$tabsArgs<ExtArgs> = {}>(args?: Subset<T, User$tabsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TabPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3164,6 +3313,54 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: PaymentScalarFieldEnum | PaymentScalarFieldEnum[]
+  }
+
+  /**
+   * User.tables
+   */
+  export type User$tablesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Table
+     */
+    select?: TableSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Table
+     */
+    omit?: TableOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TableInclude<ExtArgs> | null
+    where?: TableWhereInput
+    orderBy?: TableOrderByWithRelationInput | TableOrderByWithRelationInput[]
+    cursor?: TableWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TableScalarFieldEnum | TableScalarFieldEnum[]
+  }
+
+  /**
+   * User.tabs
+   */
+  export type User$tabsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Tab
+     */
+    select?: TabSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Tab
+     */
+    omit?: TabOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TabInclude<ExtArgs> | null
+    where?: TabWhereInput
+    orderBy?: TabOrderByWithRelationInput | TabOrderByWithRelationInput[]
+    cursor?: TabWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TabScalarFieldEnum | TabScalarFieldEnum[]
   }
 
   /**
@@ -8662,6 +8859,1194 @@ export namespace Prisma {
 
 
   /**
+   * Model Table
+   */
+
+  export type AggregateTable = {
+    _count: TableCountAggregateOutputType | null
+    _avg: TableAvgAggregateOutputType | null
+    _sum: TableSumAggregateOutputType | null
+    _min: TableMinAggregateOutputType | null
+    _max: TableMaxAggregateOutputType | null
+  }
+
+  export type TableAvgAggregateOutputType = {
+    id: number | null
+    number: number | null
+    discountValue: number | null
+    total: number | null
+    createdById: number | null
+  }
+
+  export type TableSumAggregateOutputType = {
+    id: number | null
+    number: number | null
+    discountValue: number | null
+    total: number | null
+    createdById: number | null
+  }
+
+  export type TableMinAggregateOutputType = {
+    id: number | null
+    number: number | null
+    status: $Enums.TableStatus | null
+    discountType: $Enums.discountType | null
+    discountValue: number | null
+    total: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    createdById: number | null
+  }
+
+  export type TableMaxAggregateOutputType = {
+    id: number | null
+    number: number | null
+    status: $Enums.TableStatus | null
+    discountType: $Enums.discountType | null
+    discountValue: number | null
+    total: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    createdById: number | null
+  }
+
+  export type TableCountAggregateOutputType = {
+    id: number
+    number: number
+    status: number
+    discountType: number
+    discountValue: number
+    total: number
+    createdAt: number
+    updatedAt: number
+    createdById: number
+    _all: number
+  }
+
+
+  export type TableAvgAggregateInputType = {
+    id?: true
+    number?: true
+    discountValue?: true
+    total?: true
+    createdById?: true
+  }
+
+  export type TableSumAggregateInputType = {
+    id?: true
+    number?: true
+    discountValue?: true
+    total?: true
+    createdById?: true
+  }
+
+  export type TableMinAggregateInputType = {
+    id?: true
+    number?: true
+    status?: true
+    discountType?: true
+    discountValue?: true
+    total?: true
+    createdAt?: true
+    updatedAt?: true
+    createdById?: true
+  }
+
+  export type TableMaxAggregateInputType = {
+    id?: true
+    number?: true
+    status?: true
+    discountType?: true
+    discountValue?: true
+    total?: true
+    createdAt?: true
+    updatedAt?: true
+    createdById?: true
+  }
+
+  export type TableCountAggregateInputType = {
+    id?: true
+    number?: true
+    status?: true
+    discountType?: true
+    discountValue?: true
+    total?: true
+    createdAt?: true
+    updatedAt?: true
+    createdById?: true
+    _all?: true
+  }
+
+  export type TableAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Table to aggregate.
+     */
+    where?: TableWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Tables to fetch.
+     */
+    orderBy?: TableOrderByWithRelationInput | TableOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: TableWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Tables from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Tables.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Tables
+    **/
+    _count?: true | TableCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: TableAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: TableSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: TableMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: TableMaxAggregateInputType
+  }
+
+  export type GetTableAggregateType<T extends TableAggregateArgs> = {
+        [P in keyof T & keyof AggregateTable]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateTable[P]>
+      : GetScalarType<T[P], AggregateTable[P]>
+  }
+
+
+
+
+  export type TableGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TableWhereInput
+    orderBy?: TableOrderByWithAggregationInput | TableOrderByWithAggregationInput[]
+    by: TableScalarFieldEnum[] | TableScalarFieldEnum
+    having?: TableScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: TableCountAggregateInputType | true
+    _avg?: TableAvgAggregateInputType
+    _sum?: TableSumAggregateInputType
+    _min?: TableMinAggregateInputType
+    _max?: TableMaxAggregateInputType
+  }
+
+  export type TableGroupByOutputType = {
+    id: number
+    number: number
+    status: $Enums.TableStatus
+    discountType: $Enums.discountType
+    discountValue: number
+    total: number
+    createdAt: Date
+    updatedAt: Date
+    createdById: number
+    _count: TableCountAggregateOutputType | null
+    _avg: TableAvgAggregateOutputType | null
+    _sum: TableSumAggregateOutputType | null
+    _min: TableMinAggregateOutputType | null
+    _max: TableMaxAggregateOutputType | null
+  }
+
+  type GetTableGroupByPayload<T extends TableGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<TableGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof TableGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], TableGroupByOutputType[P]>
+            : GetScalarType<T[P], TableGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type TableSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    number?: boolean
+    status?: boolean
+    discountType?: boolean
+    discountValue?: boolean
+    total?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    createdById?: boolean
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+    tabs?: boolean | Table$tabsArgs<ExtArgs>
+    _count?: boolean | TableCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["table"]>
+
+  export type TableSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    number?: boolean
+    status?: boolean
+    discountType?: boolean
+    discountValue?: boolean
+    total?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    createdById?: boolean
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["table"]>
+
+  export type TableSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    number?: boolean
+    status?: boolean
+    discountType?: boolean
+    discountValue?: boolean
+    total?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    createdById?: boolean
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["table"]>
+
+  export type TableSelectScalar = {
+    id?: boolean
+    number?: boolean
+    status?: boolean
+    discountType?: boolean
+    discountValue?: boolean
+    total?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    createdById?: boolean
+  }
+
+  export type TableOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "number" | "status" | "discountType" | "discountValue" | "total" | "createdAt" | "updatedAt" | "createdById", ExtArgs["result"]["table"]>
+  export type TableInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+    tabs?: boolean | Table$tabsArgs<ExtArgs>
+    _count?: boolean | TableCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type TableIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type TableIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $TablePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Table"
+    objects: {
+      createdBy: Prisma.$UserPayload<ExtArgs>
+      tabs: Prisma.$TabPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      number: number
+      status: $Enums.TableStatus
+      discountType: $Enums.discountType
+      discountValue: number
+      total: number
+      createdAt: Date
+      updatedAt: Date
+      createdById: number
+    }, ExtArgs["result"]["table"]>
+    composites: {}
+  }
+
+  type TableGetPayload<S extends boolean | null | undefined | TableDefaultArgs> = $Result.GetResult<Prisma.$TablePayload, S>
+
+  type TableCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<TableFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: TableCountAggregateInputType | true
+    }
+
+  export interface TableDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Table'], meta: { name: 'Table' } }
+    /**
+     * Find zero or one Table that matches the filter.
+     * @param {TableFindUniqueArgs} args - Arguments to find a Table
+     * @example
+     * // Get one Table
+     * const table = await prisma.table.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends TableFindUniqueArgs>(args: SelectSubset<T, TableFindUniqueArgs<ExtArgs>>): Prisma__TableClient<$Result.GetResult<Prisma.$TablePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Table that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {TableFindUniqueOrThrowArgs} args - Arguments to find a Table
+     * @example
+     * // Get one Table
+     * const table = await prisma.table.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends TableFindUniqueOrThrowArgs>(args: SelectSubset<T, TableFindUniqueOrThrowArgs<ExtArgs>>): Prisma__TableClient<$Result.GetResult<Prisma.$TablePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Table that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TableFindFirstArgs} args - Arguments to find a Table
+     * @example
+     * // Get one Table
+     * const table = await prisma.table.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends TableFindFirstArgs>(args?: SelectSubset<T, TableFindFirstArgs<ExtArgs>>): Prisma__TableClient<$Result.GetResult<Prisma.$TablePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Table that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TableFindFirstOrThrowArgs} args - Arguments to find a Table
+     * @example
+     * // Get one Table
+     * const table = await prisma.table.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends TableFindFirstOrThrowArgs>(args?: SelectSubset<T, TableFindFirstOrThrowArgs<ExtArgs>>): Prisma__TableClient<$Result.GetResult<Prisma.$TablePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Tables that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TableFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Tables
+     * const tables = await prisma.table.findMany()
+     * 
+     * // Get first 10 Tables
+     * const tables = await prisma.table.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const tableWithIdOnly = await prisma.table.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends TableFindManyArgs>(args?: SelectSubset<T, TableFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TablePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Table.
+     * @param {TableCreateArgs} args - Arguments to create a Table.
+     * @example
+     * // Create one Table
+     * const Table = await prisma.table.create({
+     *   data: {
+     *     // ... data to create a Table
+     *   }
+     * })
+     * 
+     */
+    create<T extends TableCreateArgs>(args: SelectSubset<T, TableCreateArgs<ExtArgs>>): Prisma__TableClient<$Result.GetResult<Prisma.$TablePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Tables.
+     * @param {TableCreateManyArgs} args - Arguments to create many Tables.
+     * @example
+     * // Create many Tables
+     * const table = await prisma.table.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends TableCreateManyArgs>(args?: SelectSubset<T, TableCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Tables and returns the data saved in the database.
+     * @param {TableCreateManyAndReturnArgs} args - Arguments to create many Tables.
+     * @example
+     * // Create many Tables
+     * const table = await prisma.table.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Tables and only return the `id`
+     * const tableWithIdOnly = await prisma.table.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends TableCreateManyAndReturnArgs>(args?: SelectSubset<T, TableCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TablePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Table.
+     * @param {TableDeleteArgs} args - Arguments to delete one Table.
+     * @example
+     * // Delete one Table
+     * const Table = await prisma.table.delete({
+     *   where: {
+     *     // ... filter to delete one Table
+     *   }
+     * })
+     * 
+     */
+    delete<T extends TableDeleteArgs>(args: SelectSubset<T, TableDeleteArgs<ExtArgs>>): Prisma__TableClient<$Result.GetResult<Prisma.$TablePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Table.
+     * @param {TableUpdateArgs} args - Arguments to update one Table.
+     * @example
+     * // Update one Table
+     * const table = await prisma.table.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends TableUpdateArgs>(args: SelectSubset<T, TableUpdateArgs<ExtArgs>>): Prisma__TableClient<$Result.GetResult<Prisma.$TablePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Tables.
+     * @param {TableDeleteManyArgs} args - Arguments to filter Tables to delete.
+     * @example
+     * // Delete a few Tables
+     * const { count } = await prisma.table.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends TableDeleteManyArgs>(args?: SelectSubset<T, TableDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Tables.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TableUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Tables
+     * const table = await prisma.table.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends TableUpdateManyArgs>(args: SelectSubset<T, TableUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Tables and returns the data updated in the database.
+     * @param {TableUpdateManyAndReturnArgs} args - Arguments to update many Tables.
+     * @example
+     * // Update many Tables
+     * const table = await prisma.table.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Tables and only return the `id`
+     * const tableWithIdOnly = await prisma.table.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends TableUpdateManyAndReturnArgs>(args: SelectSubset<T, TableUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TablePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Table.
+     * @param {TableUpsertArgs} args - Arguments to update or create a Table.
+     * @example
+     * // Update or create a Table
+     * const table = await prisma.table.upsert({
+     *   create: {
+     *     // ... data to create a Table
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Table we want to update
+     *   }
+     * })
+     */
+    upsert<T extends TableUpsertArgs>(args: SelectSubset<T, TableUpsertArgs<ExtArgs>>): Prisma__TableClient<$Result.GetResult<Prisma.$TablePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Tables.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TableCountArgs} args - Arguments to filter Tables to count.
+     * @example
+     * // Count the number of Tables
+     * const count = await prisma.table.count({
+     *   where: {
+     *     // ... the filter for the Tables we want to count
+     *   }
+     * })
+    **/
+    count<T extends TableCountArgs>(
+      args?: Subset<T, TableCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], TableCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Table.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TableAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends TableAggregateArgs>(args: Subset<T, TableAggregateArgs>): Prisma.PrismaPromise<GetTableAggregateType<T>>
+
+    /**
+     * Group by Table.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TableGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends TableGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: TableGroupByArgs['orderBy'] }
+        : { orderBy?: TableGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, TableGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetTableGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Table model
+   */
+  readonly fields: TableFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Table.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__TableClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    createdBy<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    tabs<T extends Table$tabsArgs<ExtArgs> = {}>(args?: Subset<T, Table$tabsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TabPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Table model
+   */
+  interface TableFieldRefs {
+    readonly id: FieldRef<"Table", 'Int'>
+    readonly number: FieldRef<"Table", 'Int'>
+    readonly status: FieldRef<"Table", 'TableStatus'>
+    readonly discountType: FieldRef<"Table", 'discountType'>
+    readonly discountValue: FieldRef<"Table", 'Float'>
+    readonly total: FieldRef<"Table", 'Float'>
+    readonly createdAt: FieldRef<"Table", 'DateTime'>
+    readonly updatedAt: FieldRef<"Table", 'DateTime'>
+    readonly createdById: FieldRef<"Table", 'Int'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Table findUnique
+   */
+  export type TableFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Table
+     */
+    select?: TableSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Table
+     */
+    omit?: TableOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TableInclude<ExtArgs> | null
+    /**
+     * Filter, which Table to fetch.
+     */
+    where: TableWhereUniqueInput
+  }
+
+  /**
+   * Table findUniqueOrThrow
+   */
+  export type TableFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Table
+     */
+    select?: TableSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Table
+     */
+    omit?: TableOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TableInclude<ExtArgs> | null
+    /**
+     * Filter, which Table to fetch.
+     */
+    where: TableWhereUniqueInput
+  }
+
+  /**
+   * Table findFirst
+   */
+  export type TableFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Table
+     */
+    select?: TableSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Table
+     */
+    omit?: TableOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TableInclude<ExtArgs> | null
+    /**
+     * Filter, which Table to fetch.
+     */
+    where?: TableWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Tables to fetch.
+     */
+    orderBy?: TableOrderByWithRelationInput | TableOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Tables.
+     */
+    cursor?: TableWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Tables from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Tables.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Tables.
+     */
+    distinct?: TableScalarFieldEnum | TableScalarFieldEnum[]
+  }
+
+  /**
+   * Table findFirstOrThrow
+   */
+  export type TableFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Table
+     */
+    select?: TableSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Table
+     */
+    omit?: TableOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TableInclude<ExtArgs> | null
+    /**
+     * Filter, which Table to fetch.
+     */
+    where?: TableWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Tables to fetch.
+     */
+    orderBy?: TableOrderByWithRelationInput | TableOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Tables.
+     */
+    cursor?: TableWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Tables from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Tables.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Tables.
+     */
+    distinct?: TableScalarFieldEnum | TableScalarFieldEnum[]
+  }
+
+  /**
+   * Table findMany
+   */
+  export type TableFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Table
+     */
+    select?: TableSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Table
+     */
+    omit?: TableOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TableInclude<ExtArgs> | null
+    /**
+     * Filter, which Tables to fetch.
+     */
+    where?: TableWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Tables to fetch.
+     */
+    orderBy?: TableOrderByWithRelationInput | TableOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Tables.
+     */
+    cursor?: TableWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Tables from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Tables.
+     */
+    skip?: number
+    distinct?: TableScalarFieldEnum | TableScalarFieldEnum[]
+  }
+
+  /**
+   * Table create
+   */
+  export type TableCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Table
+     */
+    select?: TableSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Table
+     */
+    omit?: TableOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TableInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Table.
+     */
+    data: XOR<TableCreateInput, TableUncheckedCreateInput>
+  }
+
+  /**
+   * Table createMany
+   */
+  export type TableCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Tables.
+     */
+    data: TableCreateManyInput | TableCreateManyInput[]
+  }
+
+  /**
+   * Table createManyAndReturn
+   */
+  export type TableCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Table
+     */
+    select?: TableSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Table
+     */
+    omit?: TableOmit<ExtArgs> | null
+    /**
+     * The data used to create many Tables.
+     */
+    data: TableCreateManyInput | TableCreateManyInput[]
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TableIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Table update
+   */
+  export type TableUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Table
+     */
+    select?: TableSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Table
+     */
+    omit?: TableOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TableInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Table.
+     */
+    data: XOR<TableUpdateInput, TableUncheckedUpdateInput>
+    /**
+     * Choose, which Table to update.
+     */
+    where: TableWhereUniqueInput
+  }
+
+  /**
+   * Table updateMany
+   */
+  export type TableUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Tables.
+     */
+    data: XOR<TableUpdateManyMutationInput, TableUncheckedUpdateManyInput>
+    /**
+     * Filter which Tables to update
+     */
+    where?: TableWhereInput
+    /**
+     * Limit how many Tables to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Table updateManyAndReturn
+   */
+  export type TableUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Table
+     */
+    select?: TableSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Table
+     */
+    omit?: TableOmit<ExtArgs> | null
+    /**
+     * The data used to update Tables.
+     */
+    data: XOR<TableUpdateManyMutationInput, TableUncheckedUpdateManyInput>
+    /**
+     * Filter which Tables to update
+     */
+    where?: TableWhereInput
+    /**
+     * Limit how many Tables to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TableIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Table upsert
+   */
+  export type TableUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Table
+     */
+    select?: TableSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Table
+     */
+    omit?: TableOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TableInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Table to update in case it exists.
+     */
+    where: TableWhereUniqueInput
+    /**
+     * In case the Table found by the `where` argument doesn't exist, create a new Table with this data.
+     */
+    create: XOR<TableCreateInput, TableUncheckedCreateInput>
+    /**
+     * In case the Table was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<TableUpdateInput, TableUncheckedUpdateInput>
+  }
+
+  /**
+   * Table delete
+   */
+  export type TableDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Table
+     */
+    select?: TableSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Table
+     */
+    omit?: TableOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TableInclude<ExtArgs> | null
+    /**
+     * Filter which Table to delete.
+     */
+    where: TableWhereUniqueInput
+  }
+
+  /**
+   * Table deleteMany
+   */
+  export type TableDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Tables to delete
+     */
+    where?: TableWhereInput
+    /**
+     * Limit how many Tables to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Table.tabs
+   */
+  export type Table$tabsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Tab
+     */
+    select?: TabSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Tab
+     */
+    omit?: TabOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TabInclude<ExtArgs> | null
+    where?: TabWhereInput
+    orderBy?: TabOrderByWithRelationInput | TabOrderByWithRelationInput[]
+    cursor?: TabWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TabScalarFieldEnum | TabScalarFieldEnum[]
+  }
+
+  /**
+   * Table without action
+   */
+  export type TableDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Table
+     */
+    select?: TableSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Table
+     */
+    omit?: TableOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TableInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model Tab
    */
 
@@ -8675,118 +10060,102 @@ export namespace Prisma {
 
   export type TabAvgAggregateOutputType = {
     id: number | null
-    tableNumber: number | null
     number: number | null
-    discountValue: number | null
-    totalOfOrders: number | null
     total: number | null
+    createdById: number | null
+    tableId: number | null
   }
 
   export type TabSumAggregateOutputType = {
     id: number | null
-    tableNumber: number | null
     number: number | null
-    discountValue: number | null
-    totalOfOrders: number | null
     total: number | null
+    createdById: number | null
+    tableId: number | null
   }
 
   export type TabMinAggregateOutputType = {
     id: number | null
-    tableNumber: number | null
     number: number | null
     description: string | null
-    discountType: $Enums.discountType | null
-    discountValue: number | null
-    totalOfOrders: number | null
     total: number | null
     createdAt: Date | null
     updatedAt: Date | null
+    createdById: number | null
+    tableId: number | null
   }
 
   export type TabMaxAggregateOutputType = {
     id: number | null
-    tableNumber: number | null
     number: number | null
     description: string | null
-    discountType: $Enums.discountType | null
-    discountValue: number | null
-    totalOfOrders: number | null
     total: number | null
     createdAt: Date | null
     updatedAt: Date | null
+    createdById: number | null
+    tableId: number | null
   }
 
   export type TabCountAggregateOutputType = {
     id: number
-    tableNumber: number
     number: number
     description: number
-    discountType: number
-    discountValue: number
-    totalOfOrders: number
     total: number
     createdAt: number
     updatedAt: number
+    createdById: number
+    tableId: number
     _all: number
   }
 
 
   export type TabAvgAggregateInputType = {
     id?: true
-    tableNumber?: true
     number?: true
-    discountValue?: true
-    totalOfOrders?: true
     total?: true
+    createdById?: true
+    tableId?: true
   }
 
   export type TabSumAggregateInputType = {
     id?: true
-    tableNumber?: true
     number?: true
-    discountValue?: true
-    totalOfOrders?: true
     total?: true
+    createdById?: true
+    tableId?: true
   }
 
   export type TabMinAggregateInputType = {
     id?: true
-    tableNumber?: true
     number?: true
     description?: true
-    discountType?: true
-    discountValue?: true
-    totalOfOrders?: true
     total?: true
     createdAt?: true
     updatedAt?: true
+    createdById?: true
+    tableId?: true
   }
 
   export type TabMaxAggregateInputType = {
     id?: true
-    tableNumber?: true
     number?: true
     description?: true
-    discountType?: true
-    discountValue?: true
-    totalOfOrders?: true
     total?: true
     createdAt?: true
     updatedAt?: true
+    createdById?: true
+    tableId?: true
   }
 
   export type TabCountAggregateInputType = {
     id?: true
-    tableNumber?: true
     number?: true
     description?: true
-    discountType?: true
-    discountValue?: true
-    totalOfOrders?: true
     total?: true
     createdAt?: true
     updatedAt?: true
+    createdById?: true
+    tableId?: true
     _all?: true
   }
 
@@ -8878,15 +10247,13 @@ export namespace Prisma {
 
   export type TabGroupByOutputType = {
     id: number
-    tableNumber: number
     number: number
     description: string | null
-    discountType: $Enums.discountType
-    discountValue: number
-    totalOfOrders: number
     total: number
     createdAt: Date
     updatedAt: Date
+    createdById: number
+    tableId: number
     _count: TabCountAggregateOutputType | null
     _avg: TabAvgAggregateOutputType | null
     _sum: TabSumAggregateOutputType | null
@@ -8910,82 +10277,88 @@ export namespace Prisma {
 
   export type TabSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    tableNumber?: boolean
     number?: boolean
     description?: boolean
-    discountType?: boolean
-    discountValue?: boolean
-    totalOfOrders?: boolean
     total?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    createdById?: boolean
+    tableId?: boolean
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+    table?: boolean | TableDefaultArgs<ExtArgs>
     orders?: boolean | Tab$ordersArgs<ExtArgs>
     _count?: boolean | TabCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["tab"]>
 
   export type TabSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    tableNumber?: boolean
     number?: boolean
     description?: boolean
-    discountType?: boolean
-    discountValue?: boolean
-    totalOfOrders?: boolean
     total?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    createdById?: boolean
+    tableId?: boolean
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+    table?: boolean | TableDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["tab"]>
 
   export type TabSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    tableNumber?: boolean
     number?: boolean
     description?: boolean
-    discountType?: boolean
-    discountValue?: boolean
-    totalOfOrders?: boolean
     total?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    createdById?: boolean
+    tableId?: boolean
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+    table?: boolean | TableDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["tab"]>
 
   export type TabSelectScalar = {
     id?: boolean
-    tableNumber?: boolean
     number?: boolean
     description?: boolean
-    discountType?: boolean
-    discountValue?: boolean
-    totalOfOrders?: boolean
     total?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    createdById?: boolean
+    tableId?: boolean
   }
 
-  export type TabOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tableNumber" | "number" | "description" | "discountType" | "discountValue" | "totalOfOrders" | "total" | "createdAt" | "updatedAt", ExtArgs["result"]["tab"]>
+  export type TabOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "number" | "description" | "total" | "createdAt" | "updatedAt" | "createdById" | "tableId", ExtArgs["result"]["tab"]>
   export type TabInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+    table?: boolean | TableDefaultArgs<ExtArgs>
     orders?: boolean | Tab$ordersArgs<ExtArgs>
     _count?: boolean | TabCountOutputTypeDefaultArgs<ExtArgs>
   }
-  export type TabIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
-  export type TabIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type TabIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+    table?: boolean | TableDefaultArgs<ExtArgs>
+  }
+  export type TabIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+    table?: boolean | TableDefaultArgs<ExtArgs>
+  }
 
   export type $TabPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Tab"
     objects: {
+      createdBy: Prisma.$UserPayload<ExtArgs>
+      table: Prisma.$TablePayload<ExtArgs>
       orders: Prisma.$OrderPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
-      tableNumber: number
       number: number
       description: string | null
-      discountType: $Enums.discountType
-      discountValue: number
-      totalOfOrders: number
       total: number
       createdAt: Date
       updatedAt: Date
+      createdById: number
+      tableId: number
     }, ExtArgs["result"]["tab"]>
     composites: {}
   }
@@ -9380,6 +10753,8 @@ export namespace Prisma {
    */
   export interface Prisma__TabClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    createdBy<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    table<T extends TableDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TableDefaultArgs<ExtArgs>>): Prisma__TableClient<$Result.GetResult<Prisma.$TablePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     orders<T extends Tab$ordersArgs<ExtArgs> = {}>(args?: Subset<T, Tab$ordersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -9411,15 +10786,13 @@ export namespace Prisma {
    */
   interface TabFieldRefs {
     readonly id: FieldRef<"Tab", 'Int'>
-    readonly tableNumber: FieldRef<"Tab", 'Int'>
     readonly number: FieldRef<"Tab", 'Int'>
     readonly description: FieldRef<"Tab", 'String'>
-    readonly discountType: FieldRef<"Tab", 'discountType'>
-    readonly discountValue: FieldRef<"Tab", 'Float'>
-    readonly totalOfOrders: FieldRef<"Tab", 'Float'>
     readonly total: FieldRef<"Tab", 'Float'>
     readonly createdAt: FieldRef<"Tab", 'DateTime'>
     readonly updatedAt: FieldRef<"Tab", 'DateTime'>
+    readonly createdById: FieldRef<"Tab", 'Int'>
+    readonly tableId: FieldRef<"Tab", 'Int'>
   }
     
 
@@ -9667,6 +11040,10 @@ export namespace Prisma {
      * The data used to create many Tabs.
      */
     data: TabCreateManyInput | TabCreateManyInput[]
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TabIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -9737,6 +11114,10 @@ export namespace Prisma {
      * Limit how many Tabs to update.
      */
     limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TabIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -13406,17 +14787,30 @@ export namespace Prisma {
   export type ItemScalarFieldEnum = (typeof ItemScalarFieldEnum)[keyof typeof ItemScalarFieldEnum]
 
 
-  export const TabScalarFieldEnum: {
+  export const TableScalarFieldEnum: {
     id: 'id',
-    tableNumber: 'tableNumber',
     number: 'number',
-    description: 'description',
+    status: 'status',
     discountType: 'discountType',
     discountValue: 'discountValue',
-    totalOfOrders: 'totalOfOrders',
     total: 'total',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    createdById: 'createdById'
+  };
+
+  export type TableScalarFieldEnum = (typeof TableScalarFieldEnum)[keyof typeof TableScalarFieldEnum]
+
+
+  export const TabScalarFieldEnum: {
+    id: 'id',
+    number: 'number',
+    description: 'description',
+    total: 'total',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    createdById: 'createdById',
+    tableId: 'tableId'
   };
 
   export type TabScalarFieldEnum = (typeof TabScalarFieldEnum)[keyof typeof TabScalarFieldEnum]
@@ -13519,6 +14913,13 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'TableStatus'
+   */
+  export type EnumTableStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TableStatus'>
+    
+
+
+  /**
    * Reference to a field of type 'discountType'
    */
   export type EnumdiscountTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'discountType'>
@@ -13560,6 +14961,8 @@ export namespace Prisma {
     role?: EnumUserRoleFilter<"User"> | $Enums.UserRole
     orders?: OrderListRelationFilter
     payments?: PaymentListRelationFilter
+    tables?: TableListRelationFilter
+    tabs?: TabListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -13570,6 +14973,8 @@ export namespace Prisma {
     role?: SortOrder
     orders?: OrderOrderByRelationAggregateInput
     payments?: PaymentOrderByRelationAggregateInput
+    tables?: TableOrderByRelationAggregateInput
+    tabs?: TabOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -13583,6 +14988,8 @@ export namespace Prisma {
     role?: EnumUserRoleFilter<"User"> | $Enums.UserRole
     orders?: OrderListRelationFilter
     payments?: PaymentListRelationFilter
+    tables?: TableListRelationFilter
+    tabs?: TabListRelationFilter
   }, "id" | "username">
 
   export type UserOrderByWithAggregationInput = {
@@ -13863,34 +15270,114 @@ export namespace Prisma {
     categoryId?: IntWithAggregatesFilter<"Item"> | number
   }
 
+  export type TableWhereInput = {
+    AND?: TableWhereInput | TableWhereInput[]
+    OR?: TableWhereInput[]
+    NOT?: TableWhereInput | TableWhereInput[]
+    id?: IntFilter<"Table"> | number
+    number?: IntFilter<"Table"> | number
+    status?: EnumTableStatusFilter<"Table"> | $Enums.TableStatus
+    discountType?: EnumdiscountTypeFilter<"Table"> | $Enums.discountType
+    discountValue?: FloatFilter<"Table"> | number
+    total?: FloatFilter<"Table"> | number
+    createdAt?: DateTimeFilter<"Table"> | Date | string
+    updatedAt?: DateTimeFilter<"Table"> | Date | string
+    createdById?: IntFilter<"Table"> | number
+    createdBy?: XOR<UserScalarRelationFilter, UserWhereInput>
+    tabs?: TabListRelationFilter
+  }
+
+  export type TableOrderByWithRelationInput = {
+    id?: SortOrder
+    number?: SortOrder
+    status?: SortOrder
+    discountType?: SortOrder
+    discountValue?: SortOrder
+    total?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    createdById?: SortOrder
+    createdBy?: UserOrderByWithRelationInput
+    tabs?: TabOrderByRelationAggregateInput
+  }
+
+  export type TableWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    AND?: TableWhereInput | TableWhereInput[]
+    OR?: TableWhereInput[]
+    NOT?: TableWhereInput | TableWhereInput[]
+    number?: IntFilter<"Table"> | number
+    status?: EnumTableStatusFilter<"Table"> | $Enums.TableStatus
+    discountType?: EnumdiscountTypeFilter<"Table"> | $Enums.discountType
+    discountValue?: FloatFilter<"Table"> | number
+    total?: FloatFilter<"Table"> | number
+    createdAt?: DateTimeFilter<"Table"> | Date | string
+    updatedAt?: DateTimeFilter<"Table"> | Date | string
+    createdById?: IntFilter<"Table"> | number
+    createdBy?: XOR<UserScalarRelationFilter, UserWhereInput>
+    tabs?: TabListRelationFilter
+  }, "id">
+
+  export type TableOrderByWithAggregationInput = {
+    id?: SortOrder
+    number?: SortOrder
+    status?: SortOrder
+    discountType?: SortOrder
+    discountValue?: SortOrder
+    total?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    createdById?: SortOrder
+    _count?: TableCountOrderByAggregateInput
+    _avg?: TableAvgOrderByAggregateInput
+    _max?: TableMaxOrderByAggregateInput
+    _min?: TableMinOrderByAggregateInput
+    _sum?: TableSumOrderByAggregateInput
+  }
+
+  export type TableScalarWhereWithAggregatesInput = {
+    AND?: TableScalarWhereWithAggregatesInput | TableScalarWhereWithAggregatesInput[]
+    OR?: TableScalarWhereWithAggregatesInput[]
+    NOT?: TableScalarWhereWithAggregatesInput | TableScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"Table"> | number
+    number?: IntWithAggregatesFilter<"Table"> | number
+    status?: EnumTableStatusWithAggregatesFilter<"Table"> | $Enums.TableStatus
+    discountType?: EnumdiscountTypeWithAggregatesFilter<"Table"> | $Enums.discountType
+    discountValue?: FloatWithAggregatesFilter<"Table"> | number
+    total?: FloatWithAggregatesFilter<"Table"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"Table"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Table"> | Date | string
+    createdById?: IntWithAggregatesFilter<"Table"> | number
+  }
+
   export type TabWhereInput = {
     AND?: TabWhereInput | TabWhereInput[]
     OR?: TabWhereInput[]
     NOT?: TabWhereInput | TabWhereInput[]
     id?: IntFilter<"Tab"> | number
-    tableNumber?: IntFilter<"Tab"> | number
     number?: IntFilter<"Tab"> | number
     description?: StringNullableFilter<"Tab"> | string | null
-    discountType?: EnumdiscountTypeFilter<"Tab"> | $Enums.discountType
-    discountValue?: FloatFilter<"Tab"> | number
-    totalOfOrders?: FloatFilter<"Tab"> | number
     total?: FloatFilter<"Tab"> | number
     createdAt?: DateTimeFilter<"Tab"> | Date | string
     updatedAt?: DateTimeFilter<"Tab"> | Date | string
+    createdById?: IntFilter<"Tab"> | number
+    tableId?: IntFilter<"Tab"> | number
+    createdBy?: XOR<UserScalarRelationFilter, UserWhereInput>
+    table?: XOR<TableScalarRelationFilter, TableWhereInput>
     orders?: OrderListRelationFilter
   }
 
   export type TabOrderByWithRelationInput = {
     id?: SortOrder
-    tableNumber?: SortOrder
     number?: SortOrder
     description?: SortOrderInput | SortOrder
-    discountType?: SortOrder
-    discountValue?: SortOrder
-    totalOfOrders?: SortOrder
     total?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    createdById?: SortOrder
+    tableId?: SortOrder
+    createdBy?: UserOrderByWithRelationInput
+    table?: TableOrderByWithRelationInput
     orders?: OrderOrderByRelationAggregateInput
   }
 
@@ -13899,29 +15386,27 @@ export namespace Prisma {
     AND?: TabWhereInput | TabWhereInput[]
     OR?: TabWhereInput[]
     NOT?: TabWhereInput | TabWhereInput[]
-    tableNumber?: IntFilter<"Tab"> | number
     number?: IntFilter<"Tab"> | number
     description?: StringNullableFilter<"Tab"> | string | null
-    discountType?: EnumdiscountTypeFilter<"Tab"> | $Enums.discountType
-    discountValue?: FloatFilter<"Tab"> | number
-    totalOfOrders?: FloatFilter<"Tab"> | number
     total?: FloatFilter<"Tab"> | number
     createdAt?: DateTimeFilter<"Tab"> | Date | string
     updatedAt?: DateTimeFilter<"Tab"> | Date | string
+    createdById?: IntFilter<"Tab"> | number
+    tableId?: IntFilter<"Tab"> | number
+    createdBy?: XOR<UserScalarRelationFilter, UserWhereInput>
+    table?: XOR<TableScalarRelationFilter, TableWhereInput>
     orders?: OrderListRelationFilter
   }, "id">
 
   export type TabOrderByWithAggregationInput = {
     id?: SortOrder
-    tableNumber?: SortOrder
     number?: SortOrder
     description?: SortOrderInput | SortOrder
-    discountType?: SortOrder
-    discountValue?: SortOrder
-    totalOfOrders?: SortOrder
     total?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    createdById?: SortOrder
+    tableId?: SortOrder
     _count?: TabCountOrderByAggregateInput
     _avg?: TabAvgOrderByAggregateInput
     _max?: TabMaxOrderByAggregateInput
@@ -13934,15 +15419,13 @@ export namespace Prisma {
     OR?: TabScalarWhereWithAggregatesInput[]
     NOT?: TabScalarWhereWithAggregatesInput | TabScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"Tab"> | number
-    tableNumber?: IntWithAggregatesFilter<"Tab"> | number
     number?: IntWithAggregatesFilter<"Tab"> | number
     description?: StringNullableWithAggregatesFilter<"Tab"> | string | null
-    discountType?: EnumdiscountTypeWithAggregatesFilter<"Tab"> | $Enums.discountType
-    discountValue?: FloatWithAggregatesFilter<"Tab"> | number
-    totalOfOrders?: FloatWithAggregatesFilter<"Tab"> | number
     total?: FloatWithAggregatesFilter<"Tab"> | number
     createdAt?: DateTimeWithAggregatesFilter<"Tab"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Tab"> | Date | string
+    createdById?: IntWithAggregatesFilter<"Tab"> | number
+    tableId?: IntWithAggregatesFilter<"Tab"> | number
   }
 
   export type OrderWhereInput = {
@@ -14170,6 +15653,8 @@ export namespace Prisma {
     role: $Enums.UserRole
     orders?: OrderCreateNestedManyWithoutUserInput
     payments?: PaymentCreateNestedManyWithoutUserInput
+    tables?: TableCreateNestedManyWithoutCreatedByInput
+    tabs?: TabCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -14180,6 +15665,8 @@ export namespace Prisma {
     role: $Enums.UserRole
     orders?: OrderUncheckedCreateNestedManyWithoutUserInput
     payments?: PaymentUncheckedCreateNestedManyWithoutUserInput
+    tables?: TableUncheckedCreateNestedManyWithoutCreatedByInput
+    tabs?: TabUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUpdateInput = {
@@ -14189,6 +15676,8 @@ export namespace Prisma {
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     orders?: OrderUpdateManyWithoutUserNestedInput
     payments?: PaymentUpdateManyWithoutUserNestedInput
+    tables?: TableUpdateManyWithoutCreatedByNestedInput
+    tabs?: TabUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -14199,6 +15688,8 @@ export namespace Prisma {
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
     payments?: PaymentUncheckedUpdateManyWithoutUserNestedInput
+    tables?: TableUncheckedUpdateManyWithoutCreatedByNestedInput
+    tabs?: TabUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -14455,80 +15946,150 @@ export namespace Prisma {
     categoryId?: IntFieldUpdateOperationsInput | number
   }
 
-  export type TabCreateInput = {
-    tableNumber: number
+  export type TableCreateInput = {
     number: number
-    description?: string | null
+    status: $Enums.TableStatus
     discountType?: $Enums.discountType
     discountValue?: number
-    totalOfOrders: number
     total: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    createdBy: UserCreateNestedOneWithoutTablesInput
+    tabs?: TabCreateNestedManyWithoutTableInput
+  }
+
+  export type TableUncheckedCreateInput = {
+    id?: number
+    number: number
+    status: $Enums.TableStatus
+    discountType?: $Enums.discountType
+    discountValue?: number
+    total: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    createdById: number
+    tabs?: TabUncheckedCreateNestedManyWithoutTableInput
+  }
+
+  export type TableUpdateInput = {
+    number?: IntFieldUpdateOperationsInput | number
+    status?: EnumTableStatusFieldUpdateOperationsInput | $Enums.TableStatus
+    discountType?: EnumdiscountTypeFieldUpdateOperationsInput | $Enums.discountType
+    discountValue?: FloatFieldUpdateOperationsInput | number
+    total?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: UserUpdateOneRequiredWithoutTablesNestedInput
+    tabs?: TabUpdateManyWithoutTableNestedInput
+  }
+
+  export type TableUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    number?: IntFieldUpdateOperationsInput | number
+    status?: EnumTableStatusFieldUpdateOperationsInput | $Enums.TableStatus
+    discountType?: EnumdiscountTypeFieldUpdateOperationsInput | $Enums.discountType
+    discountValue?: FloatFieldUpdateOperationsInput | number
+    total?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdById?: IntFieldUpdateOperationsInput | number
+    tabs?: TabUncheckedUpdateManyWithoutTableNestedInput
+  }
+
+  export type TableCreateManyInput = {
+    id?: number
+    number: number
+    status: $Enums.TableStatus
+    discountType?: $Enums.discountType
+    discountValue?: number
+    total: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    createdById: number
+  }
+
+  export type TableUpdateManyMutationInput = {
+    number?: IntFieldUpdateOperationsInput | number
+    status?: EnumTableStatusFieldUpdateOperationsInput | $Enums.TableStatus
+    discountType?: EnumdiscountTypeFieldUpdateOperationsInput | $Enums.discountType
+    discountValue?: FloatFieldUpdateOperationsInput | number
+    total?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TableUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    number?: IntFieldUpdateOperationsInput | number
+    status?: EnumTableStatusFieldUpdateOperationsInput | $Enums.TableStatus
+    discountType?: EnumdiscountTypeFieldUpdateOperationsInput | $Enums.discountType
+    discountValue?: FloatFieldUpdateOperationsInput | number
+    total?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdById?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type TabCreateInput = {
+    number: number
+    description?: string | null
+    total: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    createdBy: UserCreateNestedOneWithoutTabsInput
+    table: TableCreateNestedOneWithoutTabsInput
     orders?: OrderCreateNestedManyWithoutTabInput
   }
 
   export type TabUncheckedCreateInput = {
     id?: number
-    tableNumber: number
     number: number
     description?: string | null
-    discountType?: $Enums.discountType
-    discountValue?: number
-    totalOfOrders: number
     total: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    createdById: number
+    tableId: number
     orders?: OrderUncheckedCreateNestedManyWithoutTabInput
   }
 
   export type TabUpdateInput = {
-    tableNumber?: IntFieldUpdateOperationsInput | number
     number?: IntFieldUpdateOperationsInput | number
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    discountType?: EnumdiscountTypeFieldUpdateOperationsInput | $Enums.discountType
-    discountValue?: FloatFieldUpdateOperationsInput | number
-    totalOfOrders?: FloatFieldUpdateOperationsInput | number
     total?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: UserUpdateOneRequiredWithoutTabsNestedInput
+    table?: TableUpdateOneRequiredWithoutTabsNestedInput
     orders?: OrderUpdateManyWithoutTabNestedInput
   }
 
   export type TabUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
-    tableNumber?: IntFieldUpdateOperationsInput | number
     number?: IntFieldUpdateOperationsInput | number
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    discountType?: EnumdiscountTypeFieldUpdateOperationsInput | $Enums.discountType
-    discountValue?: FloatFieldUpdateOperationsInput | number
-    totalOfOrders?: FloatFieldUpdateOperationsInput | number
     total?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdById?: IntFieldUpdateOperationsInput | number
+    tableId?: IntFieldUpdateOperationsInput | number
     orders?: OrderUncheckedUpdateManyWithoutTabNestedInput
   }
 
   export type TabCreateManyInput = {
     id?: number
-    tableNumber: number
     number: number
     description?: string | null
-    discountType?: $Enums.discountType
-    discountValue?: number
-    totalOfOrders: number
     total: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    createdById: number
+    tableId: number
   }
 
   export type TabUpdateManyMutationInput = {
-    tableNumber?: IntFieldUpdateOperationsInput | number
     number?: IntFieldUpdateOperationsInput | number
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    discountType?: EnumdiscountTypeFieldUpdateOperationsInput | $Enums.discountType
-    discountValue?: FloatFieldUpdateOperationsInput | number
-    totalOfOrders?: FloatFieldUpdateOperationsInput | number
     total?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14536,15 +16097,13 @@ export namespace Prisma {
 
   export type TabUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
-    tableNumber?: IntFieldUpdateOperationsInput | number
     number?: IntFieldUpdateOperationsInput | number
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    discountType?: EnumdiscountTypeFieldUpdateOperationsInput | $Enums.discountType
-    discountValue?: FloatFieldUpdateOperationsInput | number
-    totalOfOrders?: FloatFieldUpdateOperationsInput | number
     total?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdById?: IntFieldUpdateOperationsInput | number
+    tableId?: IntFieldUpdateOperationsInput | number
   }
 
   export type OrderCreateInput = {
@@ -14802,11 +16361,31 @@ export namespace Prisma {
     none?: PaymentWhereInput
   }
 
+  export type TableListRelationFilter = {
+    every?: TableWhereInput
+    some?: TableWhereInput
+    none?: TableWhereInput
+  }
+
+  export type TabListRelationFilter = {
+    every?: TabWhereInput
+    some?: TabWhereInput
+    none?: TabWhereInput
+  }
+
   export type OrderOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
   export type PaymentOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type TableOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type TabOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -15119,18 +16698,11 @@ export namespace Prisma {
     categoryId?: SortOrder
   }
 
-  export type StringNullableFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | null
-    notIn?: string[] | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  export type EnumTableStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.TableStatus | EnumTableStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.TableStatus[]
+    notIn?: $Enums.TableStatus[]
+    not?: NestedEnumTableStatusFilter<$PrismaModel> | $Enums.TableStatus
   }
 
   export type EnumdiscountTypeFilter<$PrismaModel = never> = {
@@ -15151,83 +16723,71 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
-  export type SortOrderInput = {
-    sort: SortOrder
-    nulls?: NullsOrder
+  export type UserScalarRelationFilter = {
+    is?: UserWhereInput
+    isNot?: UserWhereInput
   }
 
-  export type TabCountOrderByAggregateInput = {
+  export type TableCountOrderByAggregateInput = {
     id?: SortOrder
-    tableNumber?: SortOrder
     number?: SortOrder
-    description?: SortOrder
+    status?: SortOrder
     discountType?: SortOrder
     discountValue?: SortOrder
-    totalOfOrders?: SortOrder
     total?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    createdById?: SortOrder
   }
 
-  export type TabAvgOrderByAggregateInput = {
+  export type TableAvgOrderByAggregateInput = {
     id?: SortOrder
-    tableNumber?: SortOrder
     number?: SortOrder
     discountValue?: SortOrder
-    totalOfOrders?: SortOrder
     total?: SortOrder
+    createdById?: SortOrder
   }
 
-  export type TabMaxOrderByAggregateInput = {
+  export type TableMaxOrderByAggregateInput = {
     id?: SortOrder
-    tableNumber?: SortOrder
     number?: SortOrder
-    description?: SortOrder
+    status?: SortOrder
     discountType?: SortOrder
     discountValue?: SortOrder
-    totalOfOrders?: SortOrder
     total?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    createdById?: SortOrder
   }
 
-  export type TabMinOrderByAggregateInput = {
+  export type TableMinOrderByAggregateInput = {
     id?: SortOrder
-    tableNumber?: SortOrder
     number?: SortOrder
-    description?: SortOrder
+    status?: SortOrder
     discountType?: SortOrder
     discountValue?: SortOrder
-    totalOfOrders?: SortOrder
     total?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    createdById?: SortOrder
   }
 
-  export type TabSumOrderByAggregateInput = {
+  export type TableSumOrderByAggregateInput = {
     id?: SortOrder
-    tableNumber?: SortOrder
     number?: SortOrder
     discountValue?: SortOrder
-    totalOfOrders?: SortOrder
     total?: SortOrder
+    createdById?: SortOrder
   }
 
-  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | null
-    notIn?: string[] | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedStringNullableFilter<$PrismaModel>
-    _max?: NestedStringNullableFilter<$PrismaModel>
+  export type EnumTableStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.TableStatus | EnumTableStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.TableStatus[]
+    notIn?: $Enums.TableStatus[]
+    not?: NestedEnumTableStatusWithAggregatesFilter<$PrismaModel> | $Enums.TableStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumTableStatusFilter<$PrismaModel>
+    _max?: NestedEnumTableStatusFilter<$PrismaModel>
   }
 
   export type EnumdiscountTypeWithAggregatesFilter<$PrismaModel = never> = {
@@ -15254,16 +16814,101 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+  export type StringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | null
+    notIn?: string[] | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
+  export type TableScalarRelationFilter = {
+    is?: TableWhereInput
+    isNot?: TableWhereInput
+  }
+
+  export type SortOrderInput = {
+    sort: SortOrder
+    nulls?: NullsOrder
+  }
+
+  export type TabCountOrderByAggregateInput = {
+    id?: SortOrder
+    number?: SortOrder
+    description?: SortOrder
+    total?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    createdById?: SortOrder
+    tableId?: SortOrder
+  }
+
+  export type TabAvgOrderByAggregateInput = {
+    id?: SortOrder
+    number?: SortOrder
+    total?: SortOrder
+    createdById?: SortOrder
+    tableId?: SortOrder
+  }
+
+  export type TabMaxOrderByAggregateInput = {
+    id?: SortOrder
+    number?: SortOrder
+    description?: SortOrder
+    total?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    createdById?: SortOrder
+    tableId?: SortOrder
+  }
+
+  export type TabMinOrderByAggregateInput = {
+    id?: SortOrder
+    number?: SortOrder
+    description?: SortOrder
+    total?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    createdById?: SortOrder
+    tableId?: SortOrder
+  }
+
+  export type TabSumOrderByAggregateInput = {
+    id?: SortOrder
+    number?: SortOrder
+    total?: SortOrder
+    createdById?: SortOrder
+    tableId?: SortOrder
+  }
+
+  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | null
+    notIn?: string[] | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
   export type EnumOrderStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.OrderStatus | EnumOrderStatusFieldRefInput<$PrismaModel>
     in?: $Enums.OrderStatus[]
     notIn?: $Enums.OrderStatus[]
     not?: NestedEnumOrderStatusFilter<$PrismaModel> | $Enums.OrderStatus
-  }
-
-  export type UserScalarRelationFilter = {
-    is?: UserWhereInput
-    isNot?: UserWhereInput
   }
 
   export type TabScalarRelationFilter = {
@@ -15465,6 +17110,20 @@ export namespace Prisma {
     connect?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
   }
 
+  export type TableCreateNestedManyWithoutCreatedByInput = {
+    create?: XOR<TableCreateWithoutCreatedByInput, TableUncheckedCreateWithoutCreatedByInput> | TableCreateWithoutCreatedByInput[] | TableUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: TableCreateOrConnectWithoutCreatedByInput | TableCreateOrConnectWithoutCreatedByInput[]
+    createMany?: TableCreateManyCreatedByInputEnvelope
+    connect?: TableWhereUniqueInput | TableWhereUniqueInput[]
+  }
+
+  export type TabCreateNestedManyWithoutCreatedByInput = {
+    create?: XOR<TabCreateWithoutCreatedByInput, TabUncheckedCreateWithoutCreatedByInput> | TabCreateWithoutCreatedByInput[] | TabUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: TabCreateOrConnectWithoutCreatedByInput | TabCreateOrConnectWithoutCreatedByInput[]
+    createMany?: TabCreateManyCreatedByInputEnvelope
+    connect?: TabWhereUniqueInput | TabWhereUniqueInput[]
+  }
+
   export type OrderUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<OrderCreateWithoutUserInput, OrderUncheckedCreateWithoutUserInput> | OrderCreateWithoutUserInput[] | OrderUncheckedCreateWithoutUserInput[]
     connectOrCreate?: OrderCreateOrConnectWithoutUserInput | OrderCreateOrConnectWithoutUserInput[]
@@ -15477,6 +17136,20 @@ export namespace Prisma {
     connectOrCreate?: PaymentCreateOrConnectWithoutUserInput | PaymentCreateOrConnectWithoutUserInput[]
     createMany?: PaymentCreateManyUserInputEnvelope
     connect?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+  }
+
+  export type TableUncheckedCreateNestedManyWithoutCreatedByInput = {
+    create?: XOR<TableCreateWithoutCreatedByInput, TableUncheckedCreateWithoutCreatedByInput> | TableCreateWithoutCreatedByInput[] | TableUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: TableCreateOrConnectWithoutCreatedByInput | TableCreateOrConnectWithoutCreatedByInput[]
+    createMany?: TableCreateManyCreatedByInputEnvelope
+    connect?: TableWhereUniqueInput | TableWhereUniqueInput[]
+  }
+
+  export type TabUncheckedCreateNestedManyWithoutCreatedByInput = {
+    create?: XOR<TabCreateWithoutCreatedByInput, TabUncheckedCreateWithoutCreatedByInput> | TabCreateWithoutCreatedByInput[] | TabUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: TabCreateOrConnectWithoutCreatedByInput | TabCreateOrConnectWithoutCreatedByInput[]
+    createMany?: TabCreateManyCreatedByInputEnvelope
+    connect?: TabWhereUniqueInput | TabWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -15515,6 +17188,34 @@ export namespace Prisma {
     deleteMany?: PaymentScalarWhereInput | PaymentScalarWhereInput[]
   }
 
+  export type TableUpdateManyWithoutCreatedByNestedInput = {
+    create?: XOR<TableCreateWithoutCreatedByInput, TableUncheckedCreateWithoutCreatedByInput> | TableCreateWithoutCreatedByInput[] | TableUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: TableCreateOrConnectWithoutCreatedByInput | TableCreateOrConnectWithoutCreatedByInput[]
+    upsert?: TableUpsertWithWhereUniqueWithoutCreatedByInput | TableUpsertWithWhereUniqueWithoutCreatedByInput[]
+    createMany?: TableCreateManyCreatedByInputEnvelope
+    set?: TableWhereUniqueInput | TableWhereUniqueInput[]
+    disconnect?: TableWhereUniqueInput | TableWhereUniqueInput[]
+    delete?: TableWhereUniqueInput | TableWhereUniqueInput[]
+    connect?: TableWhereUniqueInput | TableWhereUniqueInput[]
+    update?: TableUpdateWithWhereUniqueWithoutCreatedByInput | TableUpdateWithWhereUniqueWithoutCreatedByInput[]
+    updateMany?: TableUpdateManyWithWhereWithoutCreatedByInput | TableUpdateManyWithWhereWithoutCreatedByInput[]
+    deleteMany?: TableScalarWhereInput | TableScalarWhereInput[]
+  }
+
+  export type TabUpdateManyWithoutCreatedByNestedInput = {
+    create?: XOR<TabCreateWithoutCreatedByInput, TabUncheckedCreateWithoutCreatedByInput> | TabCreateWithoutCreatedByInput[] | TabUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: TabCreateOrConnectWithoutCreatedByInput | TabCreateOrConnectWithoutCreatedByInput[]
+    upsert?: TabUpsertWithWhereUniqueWithoutCreatedByInput | TabUpsertWithWhereUniqueWithoutCreatedByInput[]
+    createMany?: TabCreateManyCreatedByInputEnvelope
+    set?: TabWhereUniqueInput | TabWhereUniqueInput[]
+    disconnect?: TabWhereUniqueInput | TabWhereUniqueInput[]
+    delete?: TabWhereUniqueInput | TabWhereUniqueInput[]
+    connect?: TabWhereUniqueInput | TabWhereUniqueInput[]
+    update?: TabUpdateWithWhereUniqueWithoutCreatedByInput | TabUpdateWithWhereUniqueWithoutCreatedByInput[]
+    updateMany?: TabUpdateManyWithWhereWithoutCreatedByInput | TabUpdateManyWithWhereWithoutCreatedByInput[]
+    deleteMany?: TabScalarWhereInput | TabScalarWhereInput[]
+  }
+
   export type IntFieldUpdateOperationsInput = {
     set?: number
     increment?: number
@@ -15549,6 +17250,34 @@ export namespace Prisma {
     update?: PaymentUpdateWithWhereUniqueWithoutUserInput | PaymentUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: PaymentUpdateManyWithWhereWithoutUserInput | PaymentUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: PaymentScalarWhereInput | PaymentScalarWhereInput[]
+  }
+
+  export type TableUncheckedUpdateManyWithoutCreatedByNestedInput = {
+    create?: XOR<TableCreateWithoutCreatedByInput, TableUncheckedCreateWithoutCreatedByInput> | TableCreateWithoutCreatedByInput[] | TableUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: TableCreateOrConnectWithoutCreatedByInput | TableCreateOrConnectWithoutCreatedByInput[]
+    upsert?: TableUpsertWithWhereUniqueWithoutCreatedByInput | TableUpsertWithWhereUniqueWithoutCreatedByInput[]
+    createMany?: TableCreateManyCreatedByInputEnvelope
+    set?: TableWhereUniqueInput | TableWhereUniqueInput[]
+    disconnect?: TableWhereUniqueInput | TableWhereUniqueInput[]
+    delete?: TableWhereUniqueInput | TableWhereUniqueInput[]
+    connect?: TableWhereUniqueInput | TableWhereUniqueInput[]
+    update?: TableUpdateWithWhereUniqueWithoutCreatedByInput | TableUpdateWithWhereUniqueWithoutCreatedByInput[]
+    updateMany?: TableUpdateManyWithWhereWithoutCreatedByInput | TableUpdateManyWithWhereWithoutCreatedByInput[]
+    deleteMany?: TableScalarWhereInput | TableScalarWhereInput[]
+  }
+
+  export type TabUncheckedUpdateManyWithoutCreatedByNestedInput = {
+    create?: XOR<TabCreateWithoutCreatedByInput, TabUncheckedCreateWithoutCreatedByInput> | TabCreateWithoutCreatedByInput[] | TabUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: TabCreateOrConnectWithoutCreatedByInput | TabCreateOrConnectWithoutCreatedByInput[]
+    upsert?: TabUpsertWithWhereUniqueWithoutCreatedByInput | TabUpsertWithWhereUniqueWithoutCreatedByInput[]
+    createMany?: TabCreateManyCreatedByInputEnvelope
+    set?: TabWhereUniqueInput | TabWhereUniqueInput[]
+    disconnect?: TabWhereUniqueInput | TabWhereUniqueInput[]
+    delete?: TabWhereUniqueInput | TabWhereUniqueInput[]
+    connect?: TabWhereUniqueInput | TabWhereUniqueInput[]
+    update?: TabUpdateWithWhereUniqueWithoutCreatedByInput | TabUpdateWithWhereUniqueWithoutCreatedByInput[]
+    updateMany?: TabUpdateManyWithWhereWithoutCreatedByInput | TabUpdateManyWithWhereWithoutCreatedByInput[]
+    deleteMany?: TabScalarWhereInput | TabScalarWhereInput[]
   }
 
   export type ItemCreateNestedManyWithoutColorInput = {
@@ -15831,6 +17560,86 @@ export namespace Prisma {
     deleteMany?: OrderItemScalarWhereInput | OrderItemScalarWhereInput[]
   }
 
+  export type UserCreateNestedOneWithoutTablesInput = {
+    create?: XOR<UserCreateWithoutTablesInput, UserUncheckedCreateWithoutTablesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTablesInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type TabCreateNestedManyWithoutTableInput = {
+    create?: XOR<TabCreateWithoutTableInput, TabUncheckedCreateWithoutTableInput> | TabCreateWithoutTableInput[] | TabUncheckedCreateWithoutTableInput[]
+    connectOrCreate?: TabCreateOrConnectWithoutTableInput | TabCreateOrConnectWithoutTableInput[]
+    createMany?: TabCreateManyTableInputEnvelope
+    connect?: TabWhereUniqueInput | TabWhereUniqueInput[]
+  }
+
+  export type TabUncheckedCreateNestedManyWithoutTableInput = {
+    create?: XOR<TabCreateWithoutTableInput, TabUncheckedCreateWithoutTableInput> | TabCreateWithoutTableInput[] | TabUncheckedCreateWithoutTableInput[]
+    connectOrCreate?: TabCreateOrConnectWithoutTableInput | TabCreateOrConnectWithoutTableInput[]
+    createMany?: TabCreateManyTableInputEnvelope
+    connect?: TabWhereUniqueInput | TabWhereUniqueInput[]
+  }
+
+  export type EnumTableStatusFieldUpdateOperationsInput = {
+    set?: $Enums.TableStatus
+  }
+
+  export type EnumdiscountTypeFieldUpdateOperationsInput = {
+    set?: $Enums.discountType
+  }
+
+  export type DateTimeFieldUpdateOperationsInput = {
+    set?: Date | string
+  }
+
+  export type UserUpdateOneRequiredWithoutTablesNestedInput = {
+    create?: XOR<UserCreateWithoutTablesInput, UserUncheckedCreateWithoutTablesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTablesInput
+    upsert?: UserUpsertWithoutTablesInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutTablesInput, UserUpdateWithoutTablesInput>, UserUncheckedUpdateWithoutTablesInput>
+  }
+
+  export type TabUpdateManyWithoutTableNestedInput = {
+    create?: XOR<TabCreateWithoutTableInput, TabUncheckedCreateWithoutTableInput> | TabCreateWithoutTableInput[] | TabUncheckedCreateWithoutTableInput[]
+    connectOrCreate?: TabCreateOrConnectWithoutTableInput | TabCreateOrConnectWithoutTableInput[]
+    upsert?: TabUpsertWithWhereUniqueWithoutTableInput | TabUpsertWithWhereUniqueWithoutTableInput[]
+    createMany?: TabCreateManyTableInputEnvelope
+    set?: TabWhereUniqueInput | TabWhereUniqueInput[]
+    disconnect?: TabWhereUniqueInput | TabWhereUniqueInput[]
+    delete?: TabWhereUniqueInput | TabWhereUniqueInput[]
+    connect?: TabWhereUniqueInput | TabWhereUniqueInput[]
+    update?: TabUpdateWithWhereUniqueWithoutTableInput | TabUpdateWithWhereUniqueWithoutTableInput[]
+    updateMany?: TabUpdateManyWithWhereWithoutTableInput | TabUpdateManyWithWhereWithoutTableInput[]
+    deleteMany?: TabScalarWhereInput | TabScalarWhereInput[]
+  }
+
+  export type TabUncheckedUpdateManyWithoutTableNestedInput = {
+    create?: XOR<TabCreateWithoutTableInput, TabUncheckedCreateWithoutTableInput> | TabCreateWithoutTableInput[] | TabUncheckedCreateWithoutTableInput[]
+    connectOrCreate?: TabCreateOrConnectWithoutTableInput | TabCreateOrConnectWithoutTableInput[]
+    upsert?: TabUpsertWithWhereUniqueWithoutTableInput | TabUpsertWithWhereUniqueWithoutTableInput[]
+    createMany?: TabCreateManyTableInputEnvelope
+    set?: TabWhereUniqueInput | TabWhereUniqueInput[]
+    disconnect?: TabWhereUniqueInput | TabWhereUniqueInput[]
+    delete?: TabWhereUniqueInput | TabWhereUniqueInput[]
+    connect?: TabWhereUniqueInput | TabWhereUniqueInput[]
+    update?: TabUpdateWithWhereUniqueWithoutTableInput | TabUpdateWithWhereUniqueWithoutTableInput[]
+    updateMany?: TabUpdateManyWithWhereWithoutTableInput | TabUpdateManyWithWhereWithoutTableInput[]
+    deleteMany?: TabScalarWhereInput | TabScalarWhereInput[]
+  }
+
+  export type UserCreateNestedOneWithoutTabsInput = {
+    create?: XOR<UserCreateWithoutTabsInput, UserUncheckedCreateWithoutTabsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTabsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type TableCreateNestedOneWithoutTabsInput = {
+    create?: XOR<TableCreateWithoutTabsInput, TableUncheckedCreateWithoutTabsInput>
+    connectOrCreate?: TableCreateOrConnectWithoutTabsInput
+    connect?: TableWhereUniqueInput
+  }
+
   export type OrderCreateNestedManyWithoutTabInput = {
     create?: XOR<OrderCreateWithoutTabInput, OrderUncheckedCreateWithoutTabInput> | OrderCreateWithoutTabInput[] | OrderUncheckedCreateWithoutTabInput[]
     connectOrCreate?: OrderCreateOrConnectWithoutTabInput | OrderCreateOrConnectWithoutTabInput[]
@@ -15849,12 +17658,20 @@ export namespace Prisma {
     set?: string | null
   }
 
-  export type EnumdiscountTypeFieldUpdateOperationsInput = {
-    set?: $Enums.discountType
+  export type UserUpdateOneRequiredWithoutTabsNestedInput = {
+    create?: XOR<UserCreateWithoutTabsInput, UserUncheckedCreateWithoutTabsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTabsInput
+    upsert?: UserUpsertWithoutTabsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutTabsInput, UserUpdateWithoutTabsInput>, UserUncheckedUpdateWithoutTabsInput>
   }
 
-  export type DateTimeFieldUpdateOperationsInput = {
-    set?: Date | string
+  export type TableUpdateOneRequiredWithoutTabsNestedInput = {
+    create?: XOR<TableCreateWithoutTabsInput, TableUncheckedCreateWithoutTabsInput>
+    connectOrCreate?: TableCreateOrConnectWithoutTabsInput
+    upsert?: TableUpsertWithoutTabsInput
+    connect?: TableWhereUniqueInput
+    update?: XOR<XOR<TableUpdateToOneWithWhereWithoutTabsInput, TableUpdateWithoutTabsInput>, TableUncheckedUpdateWithoutTabsInput>
   }
 
   export type OrderUpdateManyWithoutTabNestedInput = {
@@ -16158,18 +17975,11 @@ export namespace Prisma {
     _max?: NestedBoolFilter<$PrismaModel>
   }
 
-  export type NestedStringNullableFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | null
-    notIn?: string[] | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  export type NestedEnumTableStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.TableStatus | EnumTableStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.TableStatus[]
+    notIn?: $Enums.TableStatus[]
+    not?: NestedEnumTableStatusFilter<$PrismaModel> | $Enums.TableStatus
   }
 
   export type NestedEnumdiscountTypeFilter<$PrismaModel = never> = {
@@ -16188,6 +17998,54 @@ export namespace Prisma {
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
+  }
+
+  export type NestedEnumTableStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.TableStatus | EnumTableStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.TableStatus[]
+    notIn?: $Enums.TableStatus[]
+    not?: NestedEnumTableStatusWithAggregatesFilter<$PrismaModel> | $Enums.TableStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumTableStatusFilter<$PrismaModel>
+    _max?: NestedEnumTableStatusFilter<$PrismaModel>
+  }
+
+  export type NestedEnumdiscountTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.discountType | EnumdiscountTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.discountType[]
+    notIn?: $Enums.discountType[]
+    not?: NestedEnumdiscountTypeWithAggregatesFilter<$PrismaModel> | $Enums.discountType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumdiscountTypeFilter<$PrismaModel>
+    _max?: NestedEnumdiscountTypeFilter<$PrismaModel>
+  }
+
+  export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[]
+    notIn?: Date[] | string[]
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedDateTimeFilter<$PrismaModel>
+    _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type NestedStringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | null
+    notIn?: string[] | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
   export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -16216,30 +18074,6 @@ export namespace Prisma {
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
-  }
-
-  export type NestedEnumdiscountTypeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.discountType | EnumdiscountTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.discountType[]
-    notIn?: $Enums.discountType[]
-    not?: NestedEnumdiscountTypeWithAggregatesFilter<$PrismaModel> | $Enums.discountType
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumdiscountTypeFilter<$PrismaModel>
-    _max?: NestedEnumdiscountTypeFilter<$PrismaModel>
-  }
-
-  export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[]
-    notIn?: Date[] | string[]
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedDateTimeFilter<$PrismaModel>
-    _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
   export type NestedEnumOrderStatusFilter<$PrismaModel = never> = {
@@ -16334,6 +18168,68 @@ export namespace Prisma {
     data: PaymentCreateManyUserInput | PaymentCreateManyUserInput[]
   }
 
+  export type TableCreateWithoutCreatedByInput = {
+    number: number
+    status: $Enums.TableStatus
+    discountType?: $Enums.discountType
+    discountValue?: number
+    total: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    tabs?: TabCreateNestedManyWithoutTableInput
+  }
+
+  export type TableUncheckedCreateWithoutCreatedByInput = {
+    id?: number
+    number: number
+    status: $Enums.TableStatus
+    discountType?: $Enums.discountType
+    discountValue?: number
+    total: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    tabs?: TabUncheckedCreateNestedManyWithoutTableInput
+  }
+
+  export type TableCreateOrConnectWithoutCreatedByInput = {
+    where: TableWhereUniqueInput
+    create: XOR<TableCreateWithoutCreatedByInput, TableUncheckedCreateWithoutCreatedByInput>
+  }
+
+  export type TableCreateManyCreatedByInputEnvelope = {
+    data: TableCreateManyCreatedByInput | TableCreateManyCreatedByInput[]
+  }
+
+  export type TabCreateWithoutCreatedByInput = {
+    number: number
+    description?: string | null
+    total: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    table: TableCreateNestedOneWithoutTabsInput
+    orders?: OrderCreateNestedManyWithoutTabInput
+  }
+
+  export type TabUncheckedCreateWithoutCreatedByInput = {
+    id?: number
+    number: number
+    description?: string | null
+    total: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    tableId: number
+    orders?: OrderUncheckedCreateNestedManyWithoutTabInput
+  }
+
+  export type TabCreateOrConnectWithoutCreatedByInput = {
+    where: TabWhereUniqueInput
+    create: XOR<TabCreateWithoutCreatedByInput, TabUncheckedCreateWithoutCreatedByInput>
+  }
+
+  export type TabCreateManyCreatedByInputEnvelope = {
+    data: TabCreateManyCreatedByInput | TabCreateManyCreatedByInput[]
+  }
+
   export type OrderUpsertWithWhereUniqueWithoutUserInput = {
     where: OrderWhereUniqueInput
     update: XOR<OrderUpdateWithoutUserInput, OrderUncheckedUpdateWithoutUserInput>
@@ -16392,6 +18288,67 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Payment"> | Date | string
     updatedAt?: DateTimeFilter<"Payment"> | Date | string
     userId?: IntFilter<"Payment"> | number
+  }
+
+  export type TableUpsertWithWhereUniqueWithoutCreatedByInput = {
+    where: TableWhereUniqueInput
+    update: XOR<TableUpdateWithoutCreatedByInput, TableUncheckedUpdateWithoutCreatedByInput>
+    create: XOR<TableCreateWithoutCreatedByInput, TableUncheckedCreateWithoutCreatedByInput>
+  }
+
+  export type TableUpdateWithWhereUniqueWithoutCreatedByInput = {
+    where: TableWhereUniqueInput
+    data: XOR<TableUpdateWithoutCreatedByInput, TableUncheckedUpdateWithoutCreatedByInput>
+  }
+
+  export type TableUpdateManyWithWhereWithoutCreatedByInput = {
+    where: TableScalarWhereInput
+    data: XOR<TableUpdateManyMutationInput, TableUncheckedUpdateManyWithoutCreatedByInput>
+  }
+
+  export type TableScalarWhereInput = {
+    AND?: TableScalarWhereInput | TableScalarWhereInput[]
+    OR?: TableScalarWhereInput[]
+    NOT?: TableScalarWhereInput | TableScalarWhereInput[]
+    id?: IntFilter<"Table"> | number
+    number?: IntFilter<"Table"> | number
+    status?: EnumTableStatusFilter<"Table"> | $Enums.TableStatus
+    discountType?: EnumdiscountTypeFilter<"Table"> | $Enums.discountType
+    discountValue?: FloatFilter<"Table"> | number
+    total?: FloatFilter<"Table"> | number
+    createdAt?: DateTimeFilter<"Table"> | Date | string
+    updatedAt?: DateTimeFilter<"Table"> | Date | string
+    createdById?: IntFilter<"Table"> | number
+  }
+
+  export type TabUpsertWithWhereUniqueWithoutCreatedByInput = {
+    where: TabWhereUniqueInput
+    update: XOR<TabUpdateWithoutCreatedByInput, TabUncheckedUpdateWithoutCreatedByInput>
+    create: XOR<TabCreateWithoutCreatedByInput, TabUncheckedCreateWithoutCreatedByInput>
+  }
+
+  export type TabUpdateWithWhereUniqueWithoutCreatedByInput = {
+    where: TabWhereUniqueInput
+    data: XOR<TabUpdateWithoutCreatedByInput, TabUncheckedUpdateWithoutCreatedByInput>
+  }
+
+  export type TabUpdateManyWithWhereWithoutCreatedByInput = {
+    where: TabScalarWhereInput
+    data: XOR<TabUpdateManyMutationInput, TabUncheckedUpdateManyWithoutCreatedByInput>
+  }
+
+  export type TabScalarWhereInput = {
+    AND?: TabScalarWhereInput | TabScalarWhereInput[]
+    OR?: TabScalarWhereInput[]
+    NOT?: TabScalarWhereInput | TabScalarWhereInput[]
+    id?: IntFilter<"Tab"> | number
+    number?: IntFilter<"Tab"> | number
+    description?: StringNullableFilter<"Tab"> | string | null
+    total?: FloatFilter<"Tab"> | number
+    createdAt?: DateTimeFilter<"Tab"> | Date | string
+    updatedAt?: DateTimeFilter<"Tab"> | Date | string
+    createdById?: IntFilter<"Tab"> | number
+    tableId?: IntFilter<"Tab"> | number
   }
 
   export type ItemCreateWithoutColorInput = {
@@ -16736,6 +18693,164 @@ export namespace Prisma {
     data: XOR<OrderItemUpdateManyMutationInput, OrderItemUncheckedUpdateManyWithoutItemInput>
   }
 
+  export type UserCreateWithoutTablesInput = {
+    username: string
+    password: string
+    fullName: string
+    role: $Enums.UserRole
+    orders?: OrderCreateNestedManyWithoutUserInput
+    payments?: PaymentCreateNestedManyWithoutUserInput
+    tabs?: TabCreateNestedManyWithoutCreatedByInput
+  }
+
+  export type UserUncheckedCreateWithoutTablesInput = {
+    id?: number
+    username: string
+    password: string
+    fullName: string
+    role: $Enums.UserRole
+    orders?: OrderUncheckedCreateNestedManyWithoutUserInput
+    payments?: PaymentUncheckedCreateNestedManyWithoutUserInput
+    tabs?: TabUncheckedCreateNestedManyWithoutCreatedByInput
+  }
+
+  export type UserCreateOrConnectWithoutTablesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutTablesInput, UserUncheckedCreateWithoutTablesInput>
+  }
+
+  export type TabCreateWithoutTableInput = {
+    number: number
+    description?: string | null
+    total: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    createdBy: UserCreateNestedOneWithoutTabsInput
+    orders?: OrderCreateNestedManyWithoutTabInput
+  }
+
+  export type TabUncheckedCreateWithoutTableInput = {
+    id?: number
+    number: number
+    description?: string | null
+    total: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    createdById: number
+    orders?: OrderUncheckedCreateNestedManyWithoutTabInput
+  }
+
+  export type TabCreateOrConnectWithoutTableInput = {
+    where: TabWhereUniqueInput
+    create: XOR<TabCreateWithoutTableInput, TabUncheckedCreateWithoutTableInput>
+  }
+
+  export type TabCreateManyTableInputEnvelope = {
+    data: TabCreateManyTableInput | TabCreateManyTableInput[]
+  }
+
+  export type UserUpsertWithoutTablesInput = {
+    update: XOR<UserUpdateWithoutTablesInput, UserUncheckedUpdateWithoutTablesInput>
+    create: XOR<UserCreateWithoutTablesInput, UserUncheckedCreateWithoutTablesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutTablesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutTablesInput, UserUncheckedUpdateWithoutTablesInput>
+  }
+
+  export type UserUpdateWithoutTablesInput = {
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    orders?: OrderUpdateManyWithoutUserNestedInput
+    payments?: PaymentUpdateManyWithoutUserNestedInput
+    tabs?: TabUpdateManyWithoutCreatedByNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutTablesInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
+    payments?: PaymentUncheckedUpdateManyWithoutUserNestedInput
+    tabs?: TabUncheckedUpdateManyWithoutCreatedByNestedInput
+  }
+
+  export type TabUpsertWithWhereUniqueWithoutTableInput = {
+    where: TabWhereUniqueInput
+    update: XOR<TabUpdateWithoutTableInput, TabUncheckedUpdateWithoutTableInput>
+    create: XOR<TabCreateWithoutTableInput, TabUncheckedCreateWithoutTableInput>
+  }
+
+  export type TabUpdateWithWhereUniqueWithoutTableInput = {
+    where: TabWhereUniqueInput
+    data: XOR<TabUpdateWithoutTableInput, TabUncheckedUpdateWithoutTableInput>
+  }
+
+  export type TabUpdateManyWithWhereWithoutTableInput = {
+    where: TabScalarWhereInput
+    data: XOR<TabUpdateManyMutationInput, TabUncheckedUpdateManyWithoutTableInput>
+  }
+
+  export type UserCreateWithoutTabsInput = {
+    username: string
+    password: string
+    fullName: string
+    role: $Enums.UserRole
+    orders?: OrderCreateNestedManyWithoutUserInput
+    payments?: PaymentCreateNestedManyWithoutUserInput
+    tables?: TableCreateNestedManyWithoutCreatedByInput
+  }
+
+  export type UserUncheckedCreateWithoutTabsInput = {
+    id?: number
+    username: string
+    password: string
+    fullName: string
+    role: $Enums.UserRole
+    orders?: OrderUncheckedCreateNestedManyWithoutUserInput
+    payments?: PaymentUncheckedCreateNestedManyWithoutUserInput
+    tables?: TableUncheckedCreateNestedManyWithoutCreatedByInput
+  }
+
+  export type UserCreateOrConnectWithoutTabsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutTabsInput, UserUncheckedCreateWithoutTabsInput>
+  }
+
+  export type TableCreateWithoutTabsInput = {
+    number: number
+    status: $Enums.TableStatus
+    discountType?: $Enums.discountType
+    discountValue?: number
+    total: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    createdBy: UserCreateNestedOneWithoutTablesInput
+  }
+
+  export type TableUncheckedCreateWithoutTabsInput = {
+    id?: number
+    number: number
+    status: $Enums.TableStatus
+    discountType?: $Enums.discountType
+    discountValue?: number
+    total: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    createdById: number
+  }
+
+  export type TableCreateOrConnectWithoutTabsInput = {
+    where: TableWhereUniqueInput
+    create: XOR<TableCreateWithoutTabsInput, TableUncheckedCreateWithoutTabsInput>
+  }
+
   export type OrderCreateWithoutTabInput = {
     status?: $Enums.OrderStatus
     createdAt?: Date | string
@@ -16762,6 +18877,72 @@ export namespace Prisma {
     data: OrderCreateManyTabInput | OrderCreateManyTabInput[]
   }
 
+  export type UserUpsertWithoutTabsInput = {
+    update: XOR<UserUpdateWithoutTabsInput, UserUncheckedUpdateWithoutTabsInput>
+    create: XOR<UserCreateWithoutTabsInput, UserUncheckedCreateWithoutTabsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutTabsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutTabsInput, UserUncheckedUpdateWithoutTabsInput>
+  }
+
+  export type UserUpdateWithoutTabsInput = {
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    orders?: OrderUpdateManyWithoutUserNestedInput
+    payments?: PaymentUpdateManyWithoutUserNestedInput
+    tables?: TableUpdateManyWithoutCreatedByNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutTabsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
+    payments?: PaymentUncheckedUpdateManyWithoutUserNestedInput
+    tables?: TableUncheckedUpdateManyWithoutCreatedByNestedInput
+  }
+
+  export type TableUpsertWithoutTabsInput = {
+    update: XOR<TableUpdateWithoutTabsInput, TableUncheckedUpdateWithoutTabsInput>
+    create: XOR<TableCreateWithoutTabsInput, TableUncheckedCreateWithoutTabsInput>
+    where?: TableWhereInput
+  }
+
+  export type TableUpdateToOneWithWhereWithoutTabsInput = {
+    where?: TableWhereInput
+    data: XOR<TableUpdateWithoutTabsInput, TableUncheckedUpdateWithoutTabsInput>
+  }
+
+  export type TableUpdateWithoutTabsInput = {
+    number?: IntFieldUpdateOperationsInput | number
+    status?: EnumTableStatusFieldUpdateOperationsInput | $Enums.TableStatus
+    discountType?: EnumdiscountTypeFieldUpdateOperationsInput | $Enums.discountType
+    discountValue?: FloatFieldUpdateOperationsInput | number
+    total?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: UserUpdateOneRequiredWithoutTablesNestedInput
+  }
+
+  export type TableUncheckedUpdateWithoutTabsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    number?: IntFieldUpdateOperationsInput | number
+    status?: EnumTableStatusFieldUpdateOperationsInput | $Enums.TableStatus
+    discountType?: EnumdiscountTypeFieldUpdateOperationsInput | $Enums.discountType
+    discountValue?: FloatFieldUpdateOperationsInput | number
+    total?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdById?: IntFieldUpdateOperationsInput | number
+  }
+
   export type OrderUpsertWithWhereUniqueWithoutTabInput = {
     where: OrderWhereUniqueInput
     update: XOR<OrderUpdateWithoutTabInput, OrderUncheckedUpdateWithoutTabInput>
@@ -16784,6 +18965,8 @@ export namespace Prisma {
     fullName: string
     role: $Enums.UserRole
     payments?: PaymentCreateNestedManyWithoutUserInput
+    tables?: TableCreateNestedManyWithoutCreatedByInput
+    tabs?: TabCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutOrdersInput = {
@@ -16793,6 +18976,8 @@ export namespace Prisma {
     fullName: string
     role: $Enums.UserRole
     payments?: PaymentUncheckedCreateNestedManyWithoutUserInput
+    tables?: TableUncheckedCreateNestedManyWithoutCreatedByInput
+    tabs?: TabUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutOrdersInput = {
@@ -16827,28 +19012,24 @@ export namespace Prisma {
   }
 
   export type TabCreateWithoutOrdersInput = {
-    tableNumber: number
     number: number
     description?: string | null
-    discountType?: $Enums.discountType
-    discountValue?: number
-    totalOfOrders: number
     total: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    createdBy: UserCreateNestedOneWithoutTabsInput
+    table: TableCreateNestedOneWithoutTabsInput
   }
 
   export type TabUncheckedCreateWithoutOrdersInput = {
     id?: number
-    tableNumber: number
     number: number
     description?: string | null
-    discountType?: $Enums.discountType
-    discountValue?: number
-    totalOfOrders: number
     total: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    createdById: number
+    tableId: number
   }
 
   export type TabCreateOrConnectWithoutOrdersInput = {
@@ -16873,6 +19054,8 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     payments?: PaymentUpdateManyWithoutUserNestedInput
+    tables?: TableUpdateManyWithoutCreatedByNestedInput
+    tabs?: TabUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutOrdersInput = {
@@ -16882,6 +19065,8 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     payments?: PaymentUncheckedUpdateManyWithoutUserNestedInput
+    tables?: TableUncheckedUpdateManyWithoutCreatedByNestedInput
+    tabs?: TabUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type OrderItemUpsertWithWhereUniqueWithoutOrderInput = {
@@ -16912,28 +19097,24 @@ export namespace Prisma {
   }
 
   export type TabUpdateWithoutOrdersInput = {
-    tableNumber?: IntFieldUpdateOperationsInput | number
     number?: IntFieldUpdateOperationsInput | number
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    discountType?: EnumdiscountTypeFieldUpdateOperationsInput | $Enums.discountType
-    discountValue?: FloatFieldUpdateOperationsInput | number
-    totalOfOrders?: FloatFieldUpdateOperationsInput | number
     total?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: UserUpdateOneRequiredWithoutTabsNestedInput
+    table?: TableUpdateOneRequiredWithoutTabsNestedInput
   }
 
   export type TabUncheckedUpdateWithoutOrdersInput = {
     id?: IntFieldUpdateOperationsInput | number
-    tableNumber?: IntFieldUpdateOperationsInput | number
     number?: IntFieldUpdateOperationsInput | number
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    discountType?: EnumdiscountTypeFieldUpdateOperationsInput | $Enums.discountType
-    discountValue?: FloatFieldUpdateOperationsInput | number
-    totalOfOrders?: FloatFieldUpdateOperationsInput | number
     total?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdById?: IntFieldUpdateOperationsInput | number
+    tableId?: IntFieldUpdateOperationsInput | number
   }
 
   export type OrderCreateWithoutOrderItemsInput = {
@@ -17072,6 +19253,8 @@ export namespace Prisma {
     fullName: string
     role: $Enums.UserRole
     orders?: OrderCreateNestedManyWithoutUserInput
+    tables?: TableCreateNestedManyWithoutCreatedByInput
+    tabs?: TabCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutPaymentsInput = {
@@ -17081,6 +19264,8 @@ export namespace Prisma {
     fullName: string
     role: $Enums.UserRole
     orders?: OrderUncheckedCreateNestedManyWithoutUserInput
+    tables?: TableUncheckedCreateNestedManyWithoutCreatedByInput
+    tabs?: TabUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutPaymentsInput = {
@@ -17105,6 +19290,8 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     orders?: OrderUpdateManyWithoutUserNestedInput
+    tables?: TableUpdateManyWithoutCreatedByNestedInput
+    tabs?: TabUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPaymentsInput = {
@@ -17114,6 +19301,8 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
+    tables?: TableUncheckedUpdateManyWithoutCreatedByNestedInput
+    tabs?: TabUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type OrderCreateManyUserInput = {
@@ -17134,6 +19323,27 @@ export namespace Prisma {
     method: $Enums.PaymentMethod
     createdAt?: Date | string
     updatedAt?: Date | string
+  }
+
+  export type TableCreateManyCreatedByInput = {
+    id?: number
+    number: number
+    status: $Enums.TableStatus
+    discountType?: $Enums.discountType
+    discountValue?: number
+    total: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TabCreateManyCreatedByInput = {
+    id?: number
+    number: number
+    description?: string | null
+    total: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    tableId: number
   }
 
   export type OrderUpdateWithoutUserInput = {
@@ -17194,6 +19404,71 @@ export namespace Prisma {
     method?: EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TableUpdateWithoutCreatedByInput = {
+    number?: IntFieldUpdateOperationsInput | number
+    status?: EnumTableStatusFieldUpdateOperationsInput | $Enums.TableStatus
+    discountType?: EnumdiscountTypeFieldUpdateOperationsInput | $Enums.discountType
+    discountValue?: FloatFieldUpdateOperationsInput | number
+    total?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tabs?: TabUpdateManyWithoutTableNestedInput
+  }
+
+  export type TableUncheckedUpdateWithoutCreatedByInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    number?: IntFieldUpdateOperationsInput | number
+    status?: EnumTableStatusFieldUpdateOperationsInput | $Enums.TableStatus
+    discountType?: EnumdiscountTypeFieldUpdateOperationsInput | $Enums.discountType
+    discountValue?: FloatFieldUpdateOperationsInput | number
+    total?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tabs?: TabUncheckedUpdateManyWithoutTableNestedInput
+  }
+
+  export type TableUncheckedUpdateManyWithoutCreatedByInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    number?: IntFieldUpdateOperationsInput | number
+    status?: EnumTableStatusFieldUpdateOperationsInput | $Enums.TableStatus
+    discountType?: EnumdiscountTypeFieldUpdateOperationsInput | $Enums.discountType
+    discountValue?: FloatFieldUpdateOperationsInput | number
+    total?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TabUpdateWithoutCreatedByInput = {
+    number?: IntFieldUpdateOperationsInput | number
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    total?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    table?: TableUpdateOneRequiredWithoutTabsNestedInput
+    orders?: OrderUpdateManyWithoutTabNestedInput
+  }
+
+  export type TabUncheckedUpdateWithoutCreatedByInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    number?: IntFieldUpdateOperationsInput | number
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    total?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tableId?: IntFieldUpdateOperationsInput | number
+    orders?: OrderUncheckedUpdateManyWithoutTabNestedInput
+  }
+
+  export type TabUncheckedUpdateManyWithoutCreatedByInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    number?: IntFieldUpdateOperationsInput | number
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    total?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tableId?: IntFieldUpdateOperationsInput | number
   }
 
   export type ItemCreateManyColorInput = {
@@ -17350,6 +19625,47 @@ export namespace Prisma {
     price?: FloatFieldUpdateOperationsInput | number
     total?: FloatFieldUpdateOperationsInput | number
     orderId?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type TabCreateManyTableInput = {
+    id?: number
+    number: number
+    description?: string | null
+    total: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    createdById: number
+  }
+
+  export type TabUpdateWithoutTableInput = {
+    number?: IntFieldUpdateOperationsInput | number
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    total?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: UserUpdateOneRequiredWithoutTabsNestedInput
+    orders?: OrderUpdateManyWithoutTabNestedInput
+  }
+
+  export type TabUncheckedUpdateWithoutTableInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    number?: IntFieldUpdateOperationsInput | number
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    total?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdById?: IntFieldUpdateOperationsInput | number
+    orders?: OrderUncheckedUpdateManyWithoutTabNestedInput
+  }
+
+  export type TabUncheckedUpdateManyWithoutTableInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    number?: IntFieldUpdateOperationsInput | number
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    total?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdById?: IntFieldUpdateOperationsInput | number
   }
 
   export type OrderCreateManyTabInput = {

@@ -154,17 +154,27 @@ exports.Prisma.ItemScalarFieldEnum = {
   categoryId: 'categoryId'
 };
 
-exports.Prisma.TabScalarFieldEnum = {
+exports.Prisma.TableScalarFieldEnum = {
   id: 'id',
-  tableNumber: 'tableNumber',
   number: 'number',
-  description: 'description',
+  status: 'status',
   discountType: 'discountType',
   discountValue: 'discountValue',
-  totalOfOrders: 'totalOfOrders',
   total: 'total',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  createdById: 'createdById'
+};
+
+exports.Prisma.TabScalarFieldEnum = {
+  id: 'id',
+  number: 'number',
+  description: 'description',
+  total: 'total',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  createdById: 'createdById',
+  tableId: 'tableId'
 };
 
 exports.Prisma.OrderScalarFieldEnum = {
@@ -215,6 +225,12 @@ exports.UserRole = exports.$Enums.UserRole = {
   kitchen: 'kitchen'
 };
 
+exports.TableStatus = exports.$Enums.TableStatus = {
+  open: 'open',
+  closed: 'closed',
+  paying: 'paying'
+};
+
 exports.discountType = exports.$Enums.discountType = {
   unset: 'unset',
   fixed: 'fixed',
@@ -240,6 +256,7 @@ exports.Prisma.ModelName = {
   ModifierOption: 'ModifierOption',
   Modifier: 'Modifier',
   Item: 'Item',
+  Table: 'Table',
   Tab: 'Tab',
   Order: 'Order',
   OrderItem: 'OrderItem',
