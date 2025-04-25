@@ -4,7 +4,7 @@ import { createRouter } from "../utils/socketServer";
 import { z, ZodError } from "zod";
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { env } from "../constants";
+import { SecertKey } from "../constants";
 
 // get auth and cache it
 const getAuth = baseContext.resolve(async (ctx) => {
@@ -75,7 +75,7 @@ const signIn = baseContext.resolveWithInput(
         ]).errors,
       };
 
-    const token = jwt.sign({ id: user.id }, env.SECRET_KEY);
+    const token = jwt.sign({ id: user.id }, SecertKey);
     return {
       data: { token, user },
     };

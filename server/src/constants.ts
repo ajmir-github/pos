@@ -1,18 +1,12 @@
 import dotenv from "dotenv";
 import path from "path";
-import z from "zod";
 import { CorsOptions } from "cors";
 
 dotenv.config();
 
-export const env = z
-  .object({
-    PORT: z.any(),
-    DATABASE_URL: z.string(),
-    SECRET_KEY: z.string().min(6).default("SECRET_KEY"),
-    ENV_MODE: z.enum(["development", "production"]).default("development"),
-  })
-  .parse(process.env);
+export const Port = process.env.PORT || 4000;
+export const SecertKey = process.env.SECRET_KEY || "SECRET_KEY";
+export const EnvMode = process.env.ENV_MODE || "development";
 
 export const corsOptions: CorsOptions = {
   origin: "*",

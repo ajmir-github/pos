@@ -3,7 +3,7 @@ import { createServer } from "http";
 import { Server } from "socket.io";
 import cors from "cors";
 export type { ServerToClientEvents } from "./types";
-import { corsOptions, env } from "./constants";
+import { corsOptions, Port } from "./constants";
 import { appRouter, socketHandler } from "./controllers";
 import { InferRouter } from "./utils/socketServer";
 import getLocalIP from "./utils/getLocalIP";
@@ -25,12 +25,12 @@ const host = getLocalIP(); // localhost and local IP Address
 
 httpServer.listen(
   {
-    port: env.PORT,
+    port: Port,
     host,
   },
   () => {
     console.log(`Server is running at:`);
-    console.log(`→ http://localhost:${env.PORT}`);
-    console.log(`→ http://${host}:${env.PORT}`);
+    console.log(`→ http://localhost:${Port}`);
+    console.log(`→ http://${host}:${Port}`);
   }
 );
