@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node ./dist/index.js",
     "dev": "nodemon ./src/index.ts",
-    "build": "npm install & prisma generate",
+    "build": "npm install & prisma generate & tsc",
     "test": "nodemon ./src/test.ts"
   },
   "keywords": [],
