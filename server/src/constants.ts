@@ -7,7 +7,7 @@ dotenv.config();
 
 export const env = z
   .object({
-    PORT: z.string().optional(),
+    PORT: z.any(),
     DATABASE_URL: z.string(),
     SECRET_KEY: z.string().min(6).default("SECRET_KEY"),
     ENV_MODE: z.enum(["development", "production"]).default("development"),
