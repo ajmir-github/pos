@@ -8,7 +8,6 @@ export const Port = process.env.PORT || 4000;
 export const SecertKey = process.env.SECRET_KEY || "SECRET_KEY";
 export const EnvMode = process.env.ENV_MODE;
 export const DevMode = EnvMode === "development";
-export const ProdMode = EnvMode === "production";
 
 export const corsOptions: CorsOptions = {
   origin: "*",
