@@ -18,12 +18,17 @@ const io = new socket_io_1.Server(httpServer, {
 });
 io.on("connection", controllers_1.socketHandler);
 // const host = "192.168.14.209";
-const host = (0, getLocalIP_1.default)(); // localhost and local IP Address
-httpServer.listen({
-    port: constants_1.Port,
-    host,
-}, () => {
-    console.log(`Server is running at:`);
-    console.log(`→ http://localhost:${constants_1.Port}`);
-    console.log(`→ http://${host}:${constants_1.Port}`);
-});
+if (constants_1.DevMode) {
+    const host = (0, getLocalIP_1.default)(); // localhost and local IP Address
+    httpServer.listen({
+        port: constants_1.Port,
+        host,
+    }, () => {
+        console.log(`Server is running at:`);
+        console.log(`→ http://localhost:${constants_1.Port}`);
+        console.log(`→ http://${host}:${constants_1.Port}`);
+    });
+}
+else {
+    httpServer.listen(constants_1.Port, () => console.log("Server is running!"));
+}
