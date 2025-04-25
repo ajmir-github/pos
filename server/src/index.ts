@@ -7,12 +7,20 @@ import { corsOptions, Port, DevMode } from "./constants";
 import { appRouter, socketHandler } from "./controllers";
 import { InferRouter } from "./utils/socketServer";
 import getLocalIP from "./utils/getLocalIP";
+import { database } from "./database";
 export type * from "./database";
 
 export type ClientToServerEvents = InferRouter<typeof appRouter>;
 
+// express
 const app = express();
 app.use(cors(corsOptions));
+app.get("/", async (req, res) => {
+  const colors = await database.color.findMany();
+  res.json(colors);
+});
+
+// socket
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
   cors: corsOptions,
@@ -20,6 +28,7 @@ const io = new Server(httpServer, {
 
 io.on("connection", socketHandler);
 
+// listen
 // const host = "192.168.14.209";
 if (DevMode) {
   const host = getLocalIP(); // localhost and local IP Address

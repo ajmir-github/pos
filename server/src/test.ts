@@ -1,9 +1,17 @@
-function sum(a: number, b: number) {
-  return a + b;
-}
+import { database } from "./database";
 
-function sumChain(a: number) {
-  return function (b: number) {
-    return sum(a, b);
-  };
-}
+database.color
+  .create({
+    data: {
+      name: "Red",
+      class: "bg-red-500",
+    },
+  })
+  .then(async (res) => {
+    console.log(res);
+    const colors = await database.color.findMany();
+    console.log(colors);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
