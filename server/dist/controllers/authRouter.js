@@ -81,13 +81,17 @@ const signIn = context_1.baseContext.resolveWithInput((inputs) => __awaiter(void
                 },
             ]).errors,
         };
-    const token = jsonwebtoken_1.default.sign({ id: user.id }, constants_1.env.SECRET_KEY);
+    const token = jsonwebtoken_1.default.sign({ id: user.id }, constants_1.SecertKey);
     return {
         data: { token, user },
     };
 }));
-// sign up
+// sign out
+const signOut = context_1.baseContext.resolve((context) => {
+    return context.clearAuth();
+});
 exports.authRouter = (0, socketServer_1.createRouter)({
     getAuth,
     signIn,
+    signOut,
 });

@@ -13,7 +13,7 @@ exports.baseContext = (0, socketServer_1.createContext)((socket) => {
             const token = socket.handshake.auth.token;
             if (!token)
                 return null;
-            return jsonwebtoken_1.default.verify(token, constants_1.env.SECRET_KEY);
+            return jsonwebtoken_1.default.verify(token, constants_1.SecertKey);
         },
         getAuth() {
             return socket.data.auth || null;

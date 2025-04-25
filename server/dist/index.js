@@ -20,10 +20,10 @@ io.on("connection", controllers_1.socketHandler);
 // const host = "192.168.14.209";
 const host = (0, getLocalIP_1.default)(); // localhost and local IP Address
 httpServer.listen({
-    port: constants_1.env.PORT,
+    port: constants_1.Port,
     host,
 }, () => {
     console.log(`Server is running at:`);
-    console.log(`→ http://localhost:${constants_1.env.PORT}`);
-    console.log(`→ http://${host}:${constants_1.env.PORT}`);
+    console.log(`→ http://localhost:${constants_1.Port}`);
+    console.log(`→ http://${host}:${constants_1.Port}`);
 });
