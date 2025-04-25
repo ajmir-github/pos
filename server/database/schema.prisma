@@ -69,6 +69,7 @@ model Modifier {
   required        Boolean
   // relationships
   modifierOptions ModifierOption[] @relation("ModifierOptionsOnModifers") // many-to-many
+  items           Item[]
 }
 
 model Item {
@@ -81,6 +82,7 @@ model Item {
   categoryId Int
   category   Category    @relation(fields: [categoryId], references: [id])
   orderItems OrderItem[]
+  modifiers  Modifier[]
 }
 
 // -------------------- Section Three: Tab Model 

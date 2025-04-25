@@ -1,16 +1,17 @@
 import { database } from "./database";
+import { hashSync } from "bcryptjs";
 
-database.color
+database.user
   .create({
     data: {
-      name: "Red",
-      class: "bg-red-500",
+      fullName: "Ajmir Raziqi",
+      role: "admin",
+      username: "ajmir",
+      password: hashSync("123456", 10),
     },
   })
-  .then(async (res) => {
+  .then((res) => {
     console.log(res);
-    const colors = await database.color.findMany();
-    console.log(colors);
   })
   .catch((err) => {
     console.log(err);

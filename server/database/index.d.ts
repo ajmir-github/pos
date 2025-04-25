@@ -2012,10 +2012,12 @@ export namespace Prisma {
 
   export type ModifierCountOutputType = {
     modifierOptions: number
+    items: number
   }
 
   export type ModifierCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     modifierOptions?: boolean | ModifierCountOutputTypeCountModifierOptionsArgs
+    items?: boolean | ModifierCountOutputTypeCountItemsArgs
   }
 
   // Custom InputTypes
@@ -2036,6 +2038,13 @@ export namespace Prisma {
     where?: ModifierOptionWhereInput
   }
 
+  /**
+   * ModifierCountOutputType without action
+   */
+  export type ModifierCountOutputTypeCountItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ItemWhereInput
+  }
+
 
   /**
    * Count Type ItemCountOutputType
@@ -2043,10 +2052,12 @@ export namespace Prisma {
 
   export type ItemCountOutputType = {
     orderItems: number
+    modifiers: number
   }
 
   export type ItemCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     orderItems?: boolean | ItemCountOutputTypeCountOrderItemsArgs
+    modifiers?: boolean | ItemCountOutputTypeCountModifiersArgs
   }
 
   // Custom InputTypes
@@ -2065,6 +2076,13 @@ export namespace Prisma {
    */
   export type ItemCountOutputTypeCountOrderItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: OrderItemWhereInput
+  }
+
+  /**
+   * ItemCountOutputType without action
+   */
+  export type ItemCountOutputTypeCountModifiersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ModifierWhereInput
   }
 
 
@@ -6828,6 +6846,7 @@ export namespace Prisma {
     multiple?: boolean
     required?: boolean
     modifierOptions?: boolean | Modifier$modifierOptionsArgs<ExtArgs>
+    items?: boolean | Modifier$itemsArgs<ExtArgs>
     _count?: boolean | ModifierCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["modifier"]>
 
@@ -6855,6 +6874,7 @@ export namespace Prisma {
   export type ModifierOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "multiple" | "required", ExtArgs["result"]["modifier"]>
   export type ModifierInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     modifierOptions?: boolean | Modifier$modifierOptionsArgs<ExtArgs>
+    items?: boolean | Modifier$itemsArgs<ExtArgs>
     _count?: boolean | ModifierCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ModifierIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -6864,6 +6884,7 @@ export namespace Prisma {
     name: "Modifier"
     objects: {
       modifierOptions: Prisma.$ModifierOptionPayload<ExtArgs>[]
+      items: Prisma.$ItemPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -7265,6 +7286,7 @@ export namespace Prisma {
   export interface Prisma__ModifierClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     modifierOptions<T extends Modifier$modifierOptionsArgs<ExtArgs> = {}>(args?: Subset<T, Modifier$modifierOptionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ModifierOptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    items<T extends Modifier$itemsArgs<ExtArgs> = {}>(args?: Subset<T, Modifier$itemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7710,6 +7732,30 @@ export namespace Prisma {
   }
 
   /**
+   * Modifier.items
+   */
+  export type Modifier$itemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Item
+     */
+    select?: ItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Item
+     */
+    omit?: ItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItemInclude<ExtArgs> | null
+    where?: ItemWhereInput
+    orderBy?: ItemOrderByWithRelationInput | ItemOrderByWithRelationInput[]
+    cursor?: ItemWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ItemScalarFieldEnum | ItemScalarFieldEnum[]
+  }
+
+  /**
    * Modifier without action
    */
   export type ModifierDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -7941,6 +7987,7 @@ export namespace Prisma {
     color?: boolean | ColorDefaultArgs<ExtArgs>
     category?: boolean | CategoryDefaultArgs<ExtArgs>
     orderItems?: boolean | Item$orderItemsArgs<ExtArgs>
+    modifiers?: boolean | Item$modifiersArgs<ExtArgs>
     _count?: boolean | ItemCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["item"]>
 
@@ -7977,6 +8024,7 @@ export namespace Prisma {
     color?: boolean | ColorDefaultArgs<ExtArgs>
     category?: boolean | CategoryDefaultArgs<ExtArgs>
     orderItems?: boolean | Item$orderItemsArgs<ExtArgs>
+    modifiers?: boolean | Item$modifiersArgs<ExtArgs>
     _count?: boolean | ItemCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ItemIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -7994,6 +8042,7 @@ export namespace Prisma {
       color: Prisma.$ColorPayload<ExtArgs>
       category: Prisma.$CategoryPayload<ExtArgs>
       orderItems: Prisma.$OrderItemPayload<ExtArgs>[]
+      modifiers: Prisma.$ModifierPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -8398,6 +8447,7 @@ export namespace Prisma {
     color<T extends ColorDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ColorDefaultArgs<ExtArgs>>): Prisma__ColorClient<$Result.GetResult<Prisma.$ColorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     category<T extends CategoryDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CategoryDefaultArgs<ExtArgs>>): Prisma__CategoryClient<$Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     orderItems<T extends Item$orderItemsArgs<ExtArgs> = {}>(args?: Subset<T, Item$orderItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrderItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    modifiers<T extends Item$modifiersArgs<ExtArgs> = {}>(args?: Subset<T, Item$modifiersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ModifierPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -8849,6 +8899,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: OrderItemScalarFieldEnum | OrderItemScalarFieldEnum[]
+  }
+
+  /**
+   * Item.modifiers
+   */
+  export type Item$modifiersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Modifier
+     */
+    select?: ModifierSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Modifier
+     */
+    omit?: ModifierOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ModifierInclude<ExtArgs> | null
+    where?: ModifierWhereInput
+    orderBy?: ModifierOrderByWithRelationInput | ModifierOrderByWithRelationInput[]
+    cursor?: ModifierWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ModifierScalarFieldEnum | ModifierScalarFieldEnum[]
   }
 
   /**
@@ -15260,6 +15334,7 @@ export namespace Prisma {
     multiple?: BoolFilter<"Modifier"> | boolean
     required?: BoolFilter<"Modifier"> | boolean
     modifierOptions?: ModifierOptionListRelationFilter
+    items?: ItemListRelationFilter
   }
 
   export type ModifierOrderByWithRelationInput = {
@@ -15268,6 +15343,7 @@ export namespace Prisma {
     multiple?: SortOrder
     required?: SortOrder
     modifierOptions?: ModifierOptionOrderByRelationAggregateInput
+    items?: ItemOrderByRelationAggregateInput
   }
 
   export type ModifierWhereUniqueInput = Prisma.AtLeast<{
@@ -15279,6 +15355,7 @@ export namespace Prisma {
     multiple?: BoolFilter<"Modifier"> | boolean
     required?: BoolFilter<"Modifier"> | boolean
     modifierOptions?: ModifierOptionListRelationFilter
+    items?: ItemListRelationFilter
   }, "id">
 
   export type ModifierOrderByWithAggregationInput = {
@@ -15315,6 +15392,7 @@ export namespace Prisma {
     color?: XOR<ColorScalarRelationFilter, ColorWhereInput>
     category?: XOR<CategoryScalarRelationFilter, CategoryWhereInput>
     orderItems?: OrderItemListRelationFilter
+    modifiers?: ModifierListRelationFilter
   }
 
   export type ItemOrderByWithRelationInput = {
@@ -15326,6 +15404,7 @@ export namespace Prisma {
     color?: ColorOrderByWithRelationInput
     category?: CategoryOrderByWithRelationInput
     orderItems?: OrderItemOrderByRelationAggregateInput
+    modifiers?: ModifierOrderByRelationAggregateInput
   }
 
   export type ItemWhereUniqueInput = Prisma.AtLeast<{
@@ -15340,6 +15419,7 @@ export namespace Prisma {
     color?: XOR<ColorScalarRelationFilter, ColorWhereInput>
     category?: XOR<CategoryScalarRelationFilter, CategoryWhereInput>
     orderItems?: OrderItemListRelationFilter
+    modifiers?: ModifierListRelationFilter
   }, "id">
 
   export type ItemOrderByWithAggregationInput = {
@@ -15942,6 +16022,7 @@ export namespace Prisma {
     multiple: boolean
     required: boolean
     modifierOptions?: ModifierOptionCreateNestedManyWithoutModifiersInput
+    items?: ItemCreateNestedManyWithoutModifiersInput
   }
 
   export type ModifierUncheckedCreateInput = {
@@ -15950,6 +16031,7 @@ export namespace Prisma {
     multiple: boolean
     required: boolean
     modifierOptions?: ModifierOptionUncheckedCreateNestedManyWithoutModifiersInput
+    items?: ItemUncheckedCreateNestedManyWithoutModifiersInput
   }
 
   export type ModifierUpdateInput = {
@@ -15957,6 +16039,7 @@ export namespace Prisma {
     multiple?: BoolFieldUpdateOperationsInput | boolean
     required?: BoolFieldUpdateOperationsInput | boolean
     modifierOptions?: ModifierOptionUpdateManyWithoutModifiersNestedInput
+    items?: ItemUpdateManyWithoutModifiersNestedInput
   }
 
   export type ModifierUncheckedUpdateInput = {
@@ -15965,6 +16048,7 @@ export namespace Prisma {
     multiple?: BoolFieldUpdateOperationsInput | boolean
     required?: BoolFieldUpdateOperationsInput | boolean
     modifierOptions?: ModifierOptionUncheckedUpdateManyWithoutModifiersNestedInput
+    items?: ItemUncheckedUpdateManyWithoutModifiersNestedInput
   }
 
   export type ModifierCreateManyInput = {
@@ -15993,6 +16077,7 @@ export namespace Prisma {
     color: ColorCreateNestedOneWithoutItemsInput
     category: CategoryCreateNestedOneWithoutItemsInput
     orderItems?: OrderItemCreateNestedManyWithoutItemInput
+    modifiers?: ModifierCreateNestedManyWithoutItemsInput
   }
 
   export type ItemUncheckedCreateInput = {
@@ -16002,6 +16087,7 @@ export namespace Prisma {
     colorId: number
     categoryId: number
     orderItems?: OrderItemUncheckedCreateNestedManyWithoutItemInput
+    modifiers?: ModifierUncheckedCreateNestedManyWithoutItemsInput
   }
 
   export type ItemUpdateInput = {
@@ -16010,6 +16096,7 @@ export namespace Prisma {
     color?: ColorUpdateOneRequiredWithoutItemsNestedInput
     category?: CategoryUpdateOneRequiredWithoutItemsNestedInput
     orderItems?: OrderItemUpdateManyWithoutItemNestedInput
+    modifiers?: ModifierUpdateManyWithoutItemsNestedInput
   }
 
   export type ItemUncheckedUpdateInput = {
@@ -16019,6 +16106,7 @@ export namespace Prisma {
     colorId?: IntFieldUpdateOperationsInput | number
     categoryId?: IntFieldUpdateOperationsInput | number
     orderItems?: OrderItemUncheckedUpdateManyWithoutItemNestedInput
+    modifiers?: ModifierUncheckedUpdateManyWithoutItemsNestedInput
   }
 
   export type ItemCreateManyInput = {
@@ -17554,10 +17642,22 @@ export namespace Prisma {
     connect?: ModifierOptionWhereUniqueInput | ModifierOptionWhereUniqueInput[]
   }
 
+  export type ItemCreateNestedManyWithoutModifiersInput = {
+    create?: XOR<ItemCreateWithoutModifiersInput, ItemUncheckedCreateWithoutModifiersInput> | ItemCreateWithoutModifiersInput[] | ItemUncheckedCreateWithoutModifiersInput[]
+    connectOrCreate?: ItemCreateOrConnectWithoutModifiersInput | ItemCreateOrConnectWithoutModifiersInput[]
+    connect?: ItemWhereUniqueInput | ItemWhereUniqueInput[]
+  }
+
   export type ModifierOptionUncheckedCreateNestedManyWithoutModifiersInput = {
     create?: XOR<ModifierOptionCreateWithoutModifiersInput, ModifierOptionUncheckedCreateWithoutModifiersInput> | ModifierOptionCreateWithoutModifiersInput[] | ModifierOptionUncheckedCreateWithoutModifiersInput[]
     connectOrCreate?: ModifierOptionCreateOrConnectWithoutModifiersInput | ModifierOptionCreateOrConnectWithoutModifiersInput[]
     connect?: ModifierOptionWhereUniqueInput | ModifierOptionWhereUniqueInput[]
+  }
+
+  export type ItemUncheckedCreateNestedManyWithoutModifiersInput = {
+    create?: XOR<ItemCreateWithoutModifiersInput, ItemUncheckedCreateWithoutModifiersInput> | ItemCreateWithoutModifiersInput[] | ItemUncheckedCreateWithoutModifiersInput[]
+    connectOrCreate?: ItemCreateOrConnectWithoutModifiersInput | ItemCreateOrConnectWithoutModifiersInput[]
+    connect?: ItemWhereUniqueInput | ItemWhereUniqueInput[]
   }
 
   export type BoolFieldUpdateOperationsInput = {
@@ -17577,6 +17677,19 @@ export namespace Prisma {
     deleteMany?: ModifierOptionScalarWhereInput | ModifierOptionScalarWhereInput[]
   }
 
+  export type ItemUpdateManyWithoutModifiersNestedInput = {
+    create?: XOR<ItemCreateWithoutModifiersInput, ItemUncheckedCreateWithoutModifiersInput> | ItemCreateWithoutModifiersInput[] | ItemUncheckedCreateWithoutModifiersInput[]
+    connectOrCreate?: ItemCreateOrConnectWithoutModifiersInput | ItemCreateOrConnectWithoutModifiersInput[]
+    upsert?: ItemUpsertWithWhereUniqueWithoutModifiersInput | ItemUpsertWithWhereUniqueWithoutModifiersInput[]
+    set?: ItemWhereUniqueInput | ItemWhereUniqueInput[]
+    disconnect?: ItemWhereUniqueInput | ItemWhereUniqueInput[]
+    delete?: ItemWhereUniqueInput | ItemWhereUniqueInput[]
+    connect?: ItemWhereUniqueInput | ItemWhereUniqueInput[]
+    update?: ItemUpdateWithWhereUniqueWithoutModifiersInput | ItemUpdateWithWhereUniqueWithoutModifiersInput[]
+    updateMany?: ItemUpdateManyWithWhereWithoutModifiersInput | ItemUpdateManyWithWhereWithoutModifiersInput[]
+    deleteMany?: ItemScalarWhereInput | ItemScalarWhereInput[]
+  }
+
   export type ModifierOptionUncheckedUpdateManyWithoutModifiersNestedInput = {
     create?: XOR<ModifierOptionCreateWithoutModifiersInput, ModifierOptionUncheckedCreateWithoutModifiersInput> | ModifierOptionCreateWithoutModifiersInput[] | ModifierOptionUncheckedCreateWithoutModifiersInput[]
     connectOrCreate?: ModifierOptionCreateOrConnectWithoutModifiersInput | ModifierOptionCreateOrConnectWithoutModifiersInput[]
@@ -17588,6 +17701,19 @@ export namespace Prisma {
     update?: ModifierOptionUpdateWithWhereUniqueWithoutModifiersInput | ModifierOptionUpdateWithWhereUniqueWithoutModifiersInput[]
     updateMany?: ModifierOptionUpdateManyWithWhereWithoutModifiersInput | ModifierOptionUpdateManyWithWhereWithoutModifiersInput[]
     deleteMany?: ModifierOptionScalarWhereInput | ModifierOptionScalarWhereInput[]
+  }
+
+  export type ItemUncheckedUpdateManyWithoutModifiersNestedInput = {
+    create?: XOR<ItemCreateWithoutModifiersInput, ItemUncheckedCreateWithoutModifiersInput> | ItemCreateWithoutModifiersInput[] | ItemUncheckedCreateWithoutModifiersInput[]
+    connectOrCreate?: ItemCreateOrConnectWithoutModifiersInput | ItemCreateOrConnectWithoutModifiersInput[]
+    upsert?: ItemUpsertWithWhereUniqueWithoutModifiersInput | ItemUpsertWithWhereUniqueWithoutModifiersInput[]
+    set?: ItemWhereUniqueInput | ItemWhereUniqueInput[]
+    disconnect?: ItemWhereUniqueInput | ItemWhereUniqueInput[]
+    delete?: ItemWhereUniqueInput | ItemWhereUniqueInput[]
+    connect?: ItemWhereUniqueInput | ItemWhereUniqueInput[]
+    update?: ItemUpdateWithWhereUniqueWithoutModifiersInput | ItemUpdateWithWhereUniqueWithoutModifiersInput[]
+    updateMany?: ItemUpdateManyWithWhereWithoutModifiersInput | ItemUpdateManyWithWhereWithoutModifiersInput[]
+    deleteMany?: ItemScalarWhereInput | ItemScalarWhereInput[]
   }
 
   export type ColorCreateNestedOneWithoutItemsInput = {
@@ -17609,11 +17735,23 @@ export namespace Prisma {
     connect?: OrderItemWhereUniqueInput | OrderItemWhereUniqueInput[]
   }
 
+  export type ModifierCreateNestedManyWithoutItemsInput = {
+    create?: XOR<ModifierCreateWithoutItemsInput, ModifierUncheckedCreateWithoutItemsInput> | ModifierCreateWithoutItemsInput[] | ModifierUncheckedCreateWithoutItemsInput[]
+    connectOrCreate?: ModifierCreateOrConnectWithoutItemsInput | ModifierCreateOrConnectWithoutItemsInput[]
+    connect?: ModifierWhereUniqueInput | ModifierWhereUniqueInput[]
+  }
+
   export type OrderItemUncheckedCreateNestedManyWithoutItemInput = {
     create?: XOR<OrderItemCreateWithoutItemInput, OrderItemUncheckedCreateWithoutItemInput> | OrderItemCreateWithoutItemInput[] | OrderItemUncheckedCreateWithoutItemInput[]
     connectOrCreate?: OrderItemCreateOrConnectWithoutItemInput | OrderItemCreateOrConnectWithoutItemInput[]
     createMany?: OrderItemCreateManyItemInputEnvelope
     connect?: OrderItemWhereUniqueInput | OrderItemWhereUniqueInput[]
+  }
+
+  export type ModifierUncheckedCreateNestedManyWithoutItemsInput = {
+    create?: XOR<ModifierCreateWithoutItemsInput, ModifierUncheckedCreateWithoutItemsInput> | ModifierCreateWithoutItemsInput[] | ModifierUncheckedCreateWithoutItemsInput[]
+    connectOrCreate?: ModifierCreateOrConnectWithoutItemsInput | ModifierCreateOrConnectWithoutItemsInput[]
+    connect?: ModifierWhereUniqueInput | ModifierWhereUniqueInput[]
   }
 
   export type ColorUpdateOneRequiredWithoutItemsNestedInput = {
@@ -17646,6 +17784,19 @@ export namespace Prisma {
     deleteMany?: OrderItemScalarWhereInput | OrderItemScalarWhereInput[]
   }
 
+  export type ModifierUpdateManyWithoutItemsNestedInput = {
+    create?: XOR<ModifierCreateWithoutItemsInput, ModifierUncheckedCreateWithoutItemsInput> | ModifierCreateWithoutItemsInput[] | ModifierUncheckedCreateWithoutItemsInput[]
+    connectOrCreate?: ModifierCreateOrConnectWithoutItemsInput | ModifierCreateOrConnectWithoutItemsInput[]
+    upsert?: ModifierUpsertWithWhereUniqueWithoutItemsInput | ModifierUpsertWithWhereUniqueWithoutItemsInput[]
+    set?: ModifierWhereUniqueInput | ModifierWhereUniqueInput[]
+    disconnect?: ModifierWhereUniqueInput | ModifierWhereUniqueInput[]
+    delete?: ModifierWhereUniqueInput | ModifierWhereUniqueInput[]
+    connect?: ModifierWhereUniqueInput | ModifierWhereUniqueInput[]
+    update?: ModifierUpdateWithWhereUniqueWithoutItemsInput | ModifierUpdateWithWhereUniqueWithoutItemsInput[]
+    updateMany?: ModifierUpdateManyWithWhereWithoutItemsInput | ModifierUpdateManyWithWhereWithoutItemsInput[]
+    deleteMany?: ModifierScalarWhereInput | ModifierScalarWhereInput[]
+  }
+
   export type OrderItemUncheckedUpdateManyWithoutItemNestedInput = {
     create?: XOR<OrderItemCreateWithoutItemInput, OrderItemUncheckedCreateWithoutItemInput> | OrderItemCreateWithoutItemInput[] | OrderItemUncheckedCreateWithoutItemInput[]
     connectOrCreate?: OrderItemCreateOrConnectWithoutItemInput | OrderItemCreateOrConnectWithoutItemInput[]
@@ -17658,6 +17809,19 @@ export namespace Prisma {
     update?: OrderItemUpdateWithWhereUniqueWithoutItemInput | OrderItemUpdateWithWhereUniqueWithoutItemInput[]
     updateMany?: OrderItemUpdateManyWithWhereWithoutItemInput | OrderItemUpdateManyWithWhereWithoutItemInput[]
     deleteMany?: OrderItemScalarWhereInput | OrderItemScalarWhereInput[]
+  }
+
+  export type ModifierUncheckedUpdateManyWithoutItemsNestedInput = {
+    create?: XOR<ModifierCreateWithoutItemsInput, ModifierUncheckedCreateWithoutItemsInput> | ModifierCreateWithoutItemsInput[] | ModifierUncheckedCreateWithoutItemsInput[]
+    connectOrCreate?: ModifierCreateOrConnectWithoutItemsInput | ModifierCreateOrConnectWithoutItemsInput[]
+    upsert?: ModifierUpsertWithWhereUniqueWithoutItemsInput | ModifierUpsertWithWhereUniqueWithoutItemsInput[]
+    set?: ModifierWhereUniqueInput | ModifierWhereUniqueInput[]
+    disconnect?: ModifierWhereUniqueInput | ModifierWhereUniqueInput[]
+    delete?: ModifierWhereUniqueInput | ModifierWhereUniqueInput[]
+    connect?: ModifierWhereUniqueInput | ModifierWhereUniqueInput[]
+    update?: ModifierUpdateWithWhereUniqueWithoutItemsInput | ModifierUpdateWithWhereUniqueWithoutItemsInput[]
+    updateMany?: ModifierUpdateManyWithWhereWithoutItemsInput | ModifierUpdateManyWithWhereWithoutItemsInput[]
+    deleteMany?: ModifierScalarWhereInput | ModifierScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutTablesInput = {
@@ -18460,6 +18624,7 @@ export namespace Prisma {
     price: number
     category: CategoryCreateNestedOneWithoutItemsInput
     orderItems?: OrderItemCreateNestedManyWithoutItemInput
+    modifiers?: ModifierCreateNestedManyWithoutItemsInput
   }
 
   export type ItemUncheckedCreateWithoutColorInput = {
@@ -18468,6 +18633,7 @@ export namespace Prisma {
     price: number
     categoryId: number
     orderItems?: OrderItemUncheckedCreateNestedManyWithoutItemInput
+    modifiers?: ModifierUncheckedCreateNestedManyWithoutItemsInput
   }
 
   export type ItemCreateOrConnectWithoutColorInput = {
@@ -18512,6 +18678,7 @@ export namespace Prisma {
     price: number
     color: ColorCreateNestedOneWithoutItemsInput
     orderItems?: OrderItemCreateNestedManyWithoutItemInput
+    modifiers?: ModifierCreateNestedManyWithoutItemsInput
   }
 
   export type ItemUncheckedCreateWithoutCategoryInput = {
@@ -18520,6 +18687,7 @@ export namespace Prisma {
     price: number
     colorId: number
     orderItems?: OrderItemUncheckedCreateNestedManyWithoutItemInput
+    modifiers?: ModifierUncheckedCreateNestedManyWithoutItemsInput
   }
 
   export type ItemCreateOrConnectWithoutCategoryInput = {
@@ -18552,6 +18720,7 @@ export namespace Prisma {
     name: string
     multiple: boolean
     required: boolean
+    items?: ItemCreateNestedManyWithoutModifiersInput
   }
 
   export type ModifierUncheckedCreateWithoutModifierOptionsInput = {
@@ -18559,6 +18728,7 @@ export namespace Prisma {
     name: string
     multiple: boolean
     required: boolean
+    items?: ItemUncheckedCreateNestedManyWithoutModifiersInput
   }
 
   export type ModifierCreateOrConnectWithoutModifierOptionsInput = {
@@ -18660,6 +18830,28 @@ export namespace Prisma {
     create: XOR<ModifierOptionCreateWithoutModifiersInput, ModifierOptionUncheckedCreateWithoutModifiersInput>
   }
 
+  export type ItemCreateWithoutModifiersInput = {
+    name: string
+    price: number
+    color: ColorCreateNestedOneWithoutItemsInput
+    category: CategoryCreateNestedOneWithoutItemsInput
+    orderItems?: OrderItemCreateNestedManyWithoutItemInput
+  }
+
+  export type ItemUncheckedCreateWithoutModifiersInput = {
+    id?: number
+    name: string
+    price: number
+    colorId: number
+    categoryId: number
+    orderItems?: OrderItemUncheckedCreateNestedManyWithoutItemInput
+  }
+
+  export type ItemCreateOrConnectWithoutModifiersInput = {
+    where: ItemWhereUniqueInput
+    create: XOR<ItemCreateWithoutModifiersInput, ItemUncheckedCreateWithoutModifiersInput>
+  }
+
   export type ModifierOptionUpsertWithWhereUniqueWithoutModifiersInput = {
     where: ModifierOptionWhereUniqueInput
     update: XOR<ModifierOptionUpdateWithoutModifiersInput, ModifierOptionUncheckedUpdateWithoutModifiersInput>
@@ -18683,6 +18875,22 @@ export namespace Prisma {
     id?: IntFilter<"ModifierOption"> | number
     name?: StringFilter<"ModifierOption"> | string
     price?: FloatFilter<"ModifierOption"> | number
+  }
+
+  export type ItemUpsertWithWhereUniqueWithoutModifiersInput = {
+    where: ItemWhereUniqueInput
+    update: XOR<ItemUpdateWithoutModifiersInput, ItemUncheckedUpdateWithoutModifiersInput>
+    create: XOR<ItemCreateWithoutModifiersInput, ItemUncheckedCreateWithoutModifiersInput>
+  }
+
+  export type ItemUpdateWithWhereUniqueWithoutModifiersInput = {
+    where: ItemWhereUniqueInput
+    data: XOR<ItemUpdateWithoutModifiersInput, ItemUncheckedUpdateWithoutModifiersInput>
+  }
+
+  export type ItemUpdateManyWithWhereWithoutModifiersInput = {
+    where: ItemScalarWhereInput
+    data: XOR<ItemUpdateManyMutationInput, ItemUncheckedUpdateManyWithoutModifiersInput>
   }
 
   export type ColorCreateWithoutItemsInput = {
@@ -18742,6 +18950,26 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type ModifierCreateWithoutItemsInput = {
+    name: string
+    multiple: boolean
+    required: boolean
+    modifierOptions?: ModifierOptionCreateNestedManyWithoutModifiersInput
+  }
+
+  export type ModifierUncheckedCreateWithoutItemsInput = {
+    id?: number
+    name: string
+    multiple: boolean
+    required: boolean
+    modifierOptions?: ModifierOptionUncheckedCreateNestedManyWithoutModifiersInput
+  }
+
+  export type ModifierCreateOrConnectWithoutItemsInput = {
+    where: ModifierWhereUniqueInput
+    create: XOR<ModifierCreateWithoutItemsInput, ModifierUncheckedCreateWithoutItemsInput>
+  }
+
   export type ColorUpsertWithoutItemsInput = {
     update: XOR<ColorUpdateWithoutItemsInput, ColorUncheckedUpdateWithoutItemsInput>
     create: XOR<ColorCreateWithoutItemsInput, ColorUncheckedCreateWithoutItemsInput>
@@ -18798,6 +19026,22 @@ export namespace Prisma {
   export type OrderItemUpdateManyWithWhereWithoutItemInput = {
     where: OrderItemScalarWhereInput
     data: XOR<OrderItemUpdateManyMutationInput, OrderItemUncheckedUpdateManyWithoutItemInput>
+  }
+
+  export type ModifierUpsertWithWhereUniqueWithoutItemsInput = {
+    where: ModifierWhereUniqueInput
+    update: XOR<ModifierUpdateWithoutItemsInput, ModifierUncheckedUpdateWithoutItemsInput>
+    create: XOR<ModifierCreateWithoutItemsInput, ModifierUncheckedCreateWithoutItemsInput>
+  }
+
+  export type ModifierUpdateWithWhereUniqueWithoutItemsInput = {
+    where: ModifierWhereUniqueInput
+    data: XOR<ModifierUpdateWithoutItemsInput, ModifierUncheckedUpdateWithoutItemsInput>
+  }
+
+  export type ModifierUpdateManyWithWhereWithoutItemsInput = {
+    where: ModifierScalarWhereInput
+    data: XOR<ModifierUpdateManyMutationInput, ModifierUncheckedUpdateManyWithoutItemsInput>
   }
 
   export type UserCreateWithoutTablesInput = {
@@ -19254,6 +19498,7 @@ export namespace Prisma {
     price: number
     color: ColorCreateNestedOneWithoutItemsInput
     category: CategoryCreateNestedOneWithoutItemsInput
+    modifiers?: ModifierCreateNestedManyWithoutItemsInput
   }
 
   export type ItemUncheckedCreateWithoutOrderItemsInput = {
@@ -19262,6 +19507,7 @@ export namespace Prisma {
     price: number
     colorId: number
     categoryId: number
+    modifiers?: ModifierUncheckedCreateNestedManyWithoutItemsInput
   }
 
   export type ItemCreateOrConnectWithoutOrderItemsInput = {
@@ -19331,6 +19577,7 @@ export namespace Prisma {
     price?: FloatFieldUpdateOperationsInput | number
     color?: ColorUpdateOneRequiredWithoutItemsNestedInput
     category?: CategoryUpdateOneRequiredWithoutItemsNestedInput
+    modifiers?: ModifierUpdateManyWithoutItemsNestedInput
   }
 
   export type ItemUncheckedUpdateWithoutOrderItemsInput = {
@@ -19339,6 +19586,7 @@ export namespace Prisma {
     price?: FloatFieldUpdateOperationsInput | number
     colorId?: IntFieldUpdateOperationsInput | number
     categoryId?: IntFieldUpdateOperationsInput | number
+    modifiers?: ModifierUncheckedUpdateManyWithoutItemsNestedInput
   }
 
   export type ModifierOptionUpsertWithWhereUniqueWithoutOrderItemsInput = {
@@ -19593,6 +19841,7 @@ export namespace Prisma {
     price?: FloatFieldUpdateOperationsInput | number
     category?: CategoryUpdateOneRequiredWithoutItemsNestedInput
     orderItems?: OrderItemUpdateManyWithoutItemNestedInput
+    modifiers?: ModifierUpdateManyWithoutItemsNestedInput
   }
 
   export type ItemUncheckedUpdateWithoutColorInput = {
@@ -19601,6 +19850,7 @@ export namespace Prisma {
     price?: FloatFieldUpdateOperationsInput | number
     categoryId?: IntFieldUpdateOperationsInput | number
     orderItems?: OrderItemUncheckedUpdateManyWithoutItemNestedInput
+    modifiers?: ModifierUncheckedUpdateManyWithoutItemsNestedInput
   }
 
   export type ItemUncheckedUpdateManyWithoutColorInput = {
@@ -19622,6 +19872,7 @@ export namespace Prisma {
     price?: FloatFieldUpdateOperationsInput | number
     color?: ColorUpdateOneRequiredWithoutItemsNestedInput
     orderItems?: OrderItemUpdateManyWithoutItemNestedInput
+    modifiers?: ModifierUpdateManyWithoutItemsNestedInput
   }
 
   export type ItemUncheckedUpdateWithoutCategoryInput = {
@@ -19630,6 +19881,7 @@ export namespace Prisma {
     price?: FloatFieldUpdateOperationsInput | number
     colorId?: IntFieldUpdateOperationsInput | number
     orderItems?: OrderItemUncheckedUpdateManyWithoutItemNestedInput
+    modifiers?: ModifierUncheckedUpdateManyWithoutItemsNestedInput
   }
 
   export type ItemUncheckedUpdateManyWithoutCategoryInput = {
@@ -19643,6 +19895,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     multiple?: BoolFieldUpdateOperationsInput | boolean
     required?: BoolFieldUpdateOperationsInput | boolean
+    items?: ItemUpdateManyWithoutModifiersNestedInput
   }
 
   export type ModifierUncheckedUpdateWithoutModifierOptionsInput = {
@@ -19650,6 +19903,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     multiple?: BoolFieldUpdateOperationsInput | boolean
     required?: BoolFieldUpdateOperationsInput | boolean
+    items?: ItemUncheckedUpdateManyWithoutModifiersNestedInput
   }
 
   export type ModifierUncheckedUpdateManyWithoutModifierOptionsInput = {
@@ -19704,6 +19958,31 @@ export namespace Prisma {
     price?: FloatFieldUpdateOperationsInput | number
   }
 
+  export type ItemUpdateWithoutModifiersInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    price?: FloatFieldUpdateOperationsInput | number
+    color?: ColorUpdateOneRequiredWithoutItemsNestedInput
+    category?: CategoryUpdateOneRequiredWithoutItemsNestedInput
+    orderItems?: OrderItemUpdateManyWithoutItemNestedInput
+  }
+
+  export type ItemUncheckedUpdateWithoutModifiersInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    price?: FloatFieldUpdateOperationsInput | number
+    colorId?: IntFieldUpdateOperationsInput | number
+    categoryId?: IntFieldUpdateOperationsInput | number
+    orderItems?: OrderItemUncheckedUpdateManyWithoutItemNestedInput
+  }
+
+  export type ItemUncheckedUpdateManyWithoutModifiersInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    price?: FloatFieldUpdateOperationsInput | number
+    colorId?: IntFieldUpdateOperationsInput | number
+    categoryId?: IntFieldUpdateOperationsInput | number
+  }
+
   export type OrderItemCreateManyItemInput = {
     id?: number
     quantity: number
@@ -19735,6 +20014,28 @@ export namespace Prisma {
     price?: FloatFieldUpdateOperationsInput | number
     total?: FloatFieldUpdateOperationsInput | number
     orderId?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type ModifierUpdateWithoutItemsInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    multiple?: BoolFieldUpdateOperationsInput | boolean
+    required?: BoolFieldUpdateOperationsInput | boolean
+    modifierOptions?: ModifierOptionUpdateManyWithoutModifiersNestedInput
+  }
+
+  export type ModifierUncheckedUpdateWithoutItemsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    multiple?: BoolFieldUpdateOperationsInput | boolean
+    required?: BoolFieldUpdateOperationsInput | boolean
+    modifierOptions?: ModifierOptionUncheckedUpdateManyWithoutModifiersNestedInput
+  }
+
+  export type ModifierUncheckedUpdateManyWithoutItemsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    multiple?: BoolFieldUpdateOperationsInput | boolean
+    required?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type TabCreateManyTableInput = {
