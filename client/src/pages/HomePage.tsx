@@ -1,8 +1,6 @@
 import { LayersIcon, PercentIcon } from "lucide-react";
 import { Link } from "react-router";
 import { classes, conditionalClasses } from "../utils/css";
-import { useAppSelector } from "../state";
-import { Tab } from "../types/server";
 
 enum TableStatus {
   open = "open",
@@ -49,27 +47,9 @@ function TableComponent({ table }: { table: Table }) {
   );
 }
 
-function getTables(tabs: Tab[]) {
-  const tables: number[] = [];
-  for (let index = 1; index <= 100; index++) {
-    tables.push(index);
-  }
-  return tables.map((tableNumber) => {
-    const tableTabs = tabs.filter((tab) => tab.tableNumber === tableNumber);
-    return {
-      tableNumber,
-      status: tableTabs.length === 0 ? TableStatus.closed : TableStatus.open,
-      createdAt: tableTabs.find((a) => a.createdAt)?.createdAt || Date.now(),
-      multiplyTabs: tableTabs.length > 1,
-      hasDiscount:
-        tableTabs.length !== 0 &&
-        tableTabs.some((tab) => tab.discountType !== "unset"),
-    } as Table;
-  });
-}
-
 export default function HomePage() {
-  const tables = useAppSelector((state) => getTables(state.tab));
+  // const tables = useAppSelector((state) => getTables(state.tab));
+  const tables: any[] = [];
   return (
     <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 xl:grid-cols-12 gap-2 ">
       {tables.map((table) => (

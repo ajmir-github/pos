@@ -1,10 +1,10 @@
 import { ReactNode, useEffect } from "react";
 import socket from "../socket";
-import { useAppDispatch, tabActions, useAppSelector } from "../state";
+import { useAppDispatch, tabActions } from "../state";
 import LoadingPage from "../components/LoadingPage";
 
 export default function TabProvider({ children }: { children: ReactNode }) {
-  const { status } = useAppSelector((state) => state.tab);
+  // const tabs = useAppSelector((state) => state.tab);\
   const dispatch = useAppDispatch();
 
   const getTabs = () => {

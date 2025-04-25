@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import cors from "cors";
@@ -15,7 +15,8 @@ export type ClientToServerEvents = InferRouter<typeof appRouter>;
 // express
 const app = express();
 app.use(cors(corsOptions));
-app.get("/", async (req, res) => {
+app.get("/", async (req: Request, res: Response) => {
+  if (req.query) console.log(req.query);
   const colors = await database.color.findMany();
   res.json(colors);
 });
