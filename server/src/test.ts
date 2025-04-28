@@ -1,18 +1,19 @@
 import { database } from "./database";
-import { hashSync } from "bcryptjs";
 
-database.user
-  .create({
-    data: {
-      fullName: "Ajmir Raziqi",
-      role: "admin",
-      username: "ajmir",
-      password: hashSync("123456", 10),
+database.category
+  .findMany({
+    where: {
+      parentId: null,
+    },
+    select: {
+      id: true,
+      name: true,
+      children: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
     },
   })
-  .then((res) => {
-    console.log(res);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+  .then((res) => console.dir(res, { depth: null }));

@@ -133,7 +133,8 @@ exports.Prisma.ColorScalarFieldEnum = {
 
 exports.Prisma.CategoryScalarFieldEnum = {
   id: 'id',
-  name: 'name'
+  name: 'name',
+  parentId: 'parentId'
 };
 
 exports.Prisma.ModifierOptionScalarFieldEnum = {

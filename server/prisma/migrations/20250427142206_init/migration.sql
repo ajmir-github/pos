@@ -81,7 +81,7 @@ CREATE TABLE "Table" (
     "total" DOUBLE PRECISION NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-    "createdById" INTEGER NOT NULL,
+    "createdById" INTEGER,
 
     CONSTRAINT "Table_pkey" PRIMARY KEY ("id")
 );
@@ -156,6 +156,14 @@ CREATE TABLE "_ModifierOptionsOnModifers" (
     CONSTRAINT "_ModifierOptionsOnModifers_AB_pkey" PRIMARY KEY ("A","B")
 );
 
+-- CreateTable
+CREATE TABLE "_ItemToModifier" (
+    "A" INTEGER NOT NULL,
+    "B" INTEGER NOT NULL,
+
+    CONSTRAINT "_ItemToModifier_AB_pkey" PRIMARY KEY ("A","B")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "User_username_key" ON "User"("username");
 
@@ -168,6 +176,9 @@ CREATE INDEX "_modifierOptionsOnOrderItem_B_index" ON "_modifierOptionsOnOrderIt
 -- CreateIndex
 CREATE INDEX "_ModifierOptionsOnModifers_B_index" ON "_ModifierOptionsOnModifers"("B");
 
+-- CreateIndex
+CREATE INDEX "_ItemToModifier_B_index" ON "_ItemToModifier"("B");
+
 -- AddForeignKey
 ALTER TABLE "Item" ADD CONSTRAINT "Item_colorId_fkey" FOREIGN KEY ("colorId") REFERENCES "Color"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
@@ -175,7 +186,7 @@ ALTER TABLE "Item" ADD CONSTRAINT "Item_colorId_fkey" FOREIGN KEY ("colorId") RE
 ALTER TABLE "Item" ADD CONSTRAINT "Item_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "Category"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Table" ADD CONSTRAINT "Table_createdById_fkey" FOREIGN KEY ("createdById") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Table" ADD CONSTRAINT "Table_createdById_fkey" FOREIGN KEY ("createdById") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Tab" ADD CONSTRAINT "Tab_createdById_fkey" FOREIGN KEY ("createdById") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -209,3 +220,9 @@ ALTER TABLE "_ModifierOptionsOnModifers" ADD CONSTRAINT "_ModifierOptionsOnModif
 
 -- AddForeignKey
 ALTER TABLE "_ModifierOptionsOnModifers" ADD CONSTRAINT "_ModifierOptionsOnModifers_B_fkey" FOREIGN KEY ("B") REFERENCES "ModifierOption"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_ItemToModifier" ADD CONSTRAINT "_ItemToModifier_A_fkey" FOREIGN KEY ("A") REFERENCES "Item"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_ItemToModifier" ADD CONSTRAINT "_ItemToModifier_B_fkey" FOREIGN KEY ("B") REFERENCES "Modifier"("id") ON DELETE CASCADE ON UPDATE CASCADE;

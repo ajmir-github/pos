@@ -47,10 +47,15 @@ model Color {
 // -------------------- Section Two: Item Model 
 
 model Category {
-  id    Int    @id @default(autoincrement())
-  name  String
+  id   Int    @id @default(autoincrement())
+  name String
+
+  // Self-relation for subcategories
+  parentId Int? // optional, because root categories have no parent
+  parent   Category?  @relation("CategoryToSubcategories", fields: [parentId], references: [id])
+  children Category[] @relation("CategoryToSubcategories")
   // relationships
-  items Item[]
+  items    Item[]
 }
 
 model ModifierOption {
@@ -109,8 +114,8 @@ model Table {
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
   // relationships
-  createdById   Int
-  createdBy     User         @relation(fields: [createdById], references: [id])
+  createdById   Int?
+  createdBy     User?        @relation(fields: [createdById], references: [id])
   tabs          Tab[]
 }
 
