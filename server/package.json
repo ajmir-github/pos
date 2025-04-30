@@ -6,7 +6,7 @@
     "start": "node ./dist/index.js",
     "dev": "nodemon ./src/index.ts",
     "build": "npm install && prisma migrate deploy && prisma generate",
-    "seed": "ts-node ./src/seed.ts",
+    "seed": "ts-node ./src/seed",
     "test": "nodemon ./src/test.ts"
   },
   "keywords": [],

@@ -5,7 +5,11 @@ import type {
 } from "../../server/src";
 import { getLocalToken } from "./utils/localToken";
 
-const ServerURL = import.meta.env.VITE_SERVER || "http://192.168.14.209:4000";
+const ServerURL = import.meta.env.VITE_SERVER || "http://192.168.88.231:4000/";
+
+console.log({
+  ServerURL,
+});
 
 const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(
   ServerURL,
