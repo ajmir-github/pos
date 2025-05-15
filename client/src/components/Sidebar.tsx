@@ -9,16 +9,16 @@ import {
   UtensilsIcon,
 } from "lucide-react";
 import { Link } from "react-router";
-import { authActions, useAppDispatch } from "../state";
 import { clearLocalToken } from "../utils/localToken";
 import socket from "../socket";
+import { useAuth } from "../state";
 
 export default function Sidebar() {
-  const dispatch = useAppDispatch();
+  const authState = useAuth();
   const handleLogOut = () =>
     socket.emit("signOut", () => {
       clearLocalToken();
-      dispatch(authActions.clearAuth());
+      authState.update(null);
     });
   return (
     <div className="flex flex-col justify-between h-full text-xs md:text-base gap-2">

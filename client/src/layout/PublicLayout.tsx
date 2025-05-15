@@ -1,8 +1,8 @@
 import { Navigate, Outlet } from "react-router";
-import { useAppSelector } from "../state";
+import { useAuth } from "../state";
 
 export default function PublicLayout() {
-  const { auth } = useAppSelector((state) => state.auth);
+  const auth = useAuth((state) => state.data);
 
   if (auth) return <Navigate to={"/"} />;
 

@@ -4,19 +4,20 @@ import { CorsOptions } from "cors";
 
 dotenv.config();
 
-export const Port = process.env.PORT || 4000;
-export const SecertKey = process.env.SECRET_KEY || "SECRET_KEY";
-export const EnvMode = process.env.ENV_MODE;
+const { PORT, SECRET_KEY, ENV_MODE, DATABASE_URL, CLIENT_ORIGIN } = process.env;
+
+export const Port = PORT || 4000;
+export const SecertKey = SECRET_KEY || "SECRET_KEY";
+export const EnvMode = ENV_MODE;
 export const DevMode = EnvMode === "development";
+export const DatabaseURL = DATABASE_URL;
+if (!DatabaseURL)
+  throw new Error("Please provide databaseURL in environmental variables!");
 
 export const corsOptions: CorsOptions = {
-  origin: "*",
+  origin: CLIENT_ORIGIN || "*",
   methods: "*",
 };
 
-export const PublicImageDirectory = path.join(
-  __dirname,
-  "../",
-  "public",
-  "images"
-);
+export const ProjectDirectory = path.join(__dirname, "../");
+export const PublicDirectory = path.join(ProjectDirectory, "public");

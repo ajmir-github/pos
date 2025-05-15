@@ -1,0 +1,26 @@
+{
+  "lastUsedId": 3,
+  "records": [
+    {
+      "title": "The Great Gatsby",
+      "author": "F. Scott Fitzgerald",
+      "genre": "Fiction",
+      "year": 1925,
+      "id": 1
+    },
+    {
+      "title": "The Great Gatsby",
+      "author": "F. Scott Fitzgerald",
+      "genre": "Fiction",
+      "year": 1925,
+      "id": 2
+    },
+    {
+      "title": "The Great Gatsby",
+      "author": "F. Scott Fitzgerald",
+      "genre": "Fiction",
+      "year": 1925,
+      "id": 3
+    }
+  ]
+}

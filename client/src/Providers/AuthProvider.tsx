@@ -1,41 +1,41 @@
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect } from "react";
 import socket from "../socket";
-import { useAppDispatch, authActions } from "../state";
+import { useAuth } from "../state";
 import { clearLocalToken, hasLocalToken } from "../utils/localToken";
 import LoadingPage from "../components/LoadingPage";
 
 export default function AuthProvider({ children }: { children: ReactNode }) {
-  const [isLoading, setLoading] = useState(true);
-  const dispatch = useAppDispatch();
+  const state = useAuth();
 
   const authenticate = () => {
-    if (!hasLocalToken()) return setLoading(false);
+    if (!hasLocalToken()) return state.reset();
     socket.emit("getAuth", (response) => {
-      if (response.data) {
-        dispatch(authActions.setAuth(response.data));
-        return setLoading(false);
-      }
+      if (response.data) return state.init(response.data);
       if (response.error) {
         clearLocalToken();
-        return setLoading(false);
+        return state.setError(response.error.message);
       }
       // else
       console.error(response);
-      return setLoading(false);
+      return state.setError("IDK");
     });
   };
 
   useEffect(() => {
     authenticate();
 
-    socket.on("auth", (auth) =>
-      dispatch(auth ? authActions.setAuth(auth) : authActions.clearAuth())
-    );
+    socket.on("auth", (auth) => state.setData(auth));
 
     return () => {
       socket.off("auth");
     };
   }, []);
 
-  return isLoading ? <LoadingPage message="Autheticating" /> : children;
+  console.log(state);
+
+  return state.data !== null ? (
+    <LoadingPage message="Autheticating" />
+  ) : (
+    children
+  );
 }

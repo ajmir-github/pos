@@ -1,6 +1,6 @@
 import { ReactNode, useEffect } from "react";
 import socket from "../socket";
-import { useAppDispatch, tabActions } from "../state";
+import { useAppDispatch } from "../state";
 import LoadingPage from "../components/LoadingPage";
 
 export default function TabProvider({ children }: { children: ReactNode }) {
@@ -9,9 +9,9 @@ export default function TabProvider({ children }: { children: ReactNode }) {
 
   const getTabs = () => {
     socket.emit("getTabs", (response) => {
-      if (response.success) return dispatch(tabActions.loadTabs(response.data));
+      // if (response.success) return dispatch(tabActions.loadTabs(response.data));
       // else
-      dispatch(tabActions.clearTabs());
+      // dispatch(tabActions.clearTabs());
       console.error(response);
     });
   };

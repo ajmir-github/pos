@@ -3,7 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import socket from "../socket";
 import { setLocalToken } from "../utils/localToken";
-import { useAppDispatch, authActions } from "../state";
+import { useAuth } from "../state";
 
 const inputValidator = z.object({
   username: z.string().min(3),
@@ -13,7 +13,7 @@ const inputValidator = z.object({
 type Inputs = z.infer<typeof inputValidator>;
 
 export default function LoginPage() {
-  const dispatch = useAppDispatch();
+  const authState = useAuth();
   const {
     register,
     handleSubmit,
@@ -26,7 +26,7 @@ export default function LoginPage() {
     socket.emit("signIn", data, (response) => {
       if (response.data) {
         setLocalToken(response.data.token);
-        dispatch(authActions.setAuth(response.data.user));
+        authState.init(response.data.user);
         return;
       }
       if (response.error) {

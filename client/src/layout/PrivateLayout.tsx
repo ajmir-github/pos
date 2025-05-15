@@ -1,9 +1,9 @@
 import { Navigate, Outlet } from "react-router";
-import { useAppSelector } from "../state";
+import { useAuth } from "../state";
 import Sidebar from "../components/Sidebar";
 
 export default function PrivateLayout() {
-  const { auth } = useAppSelector((state) => state.auth);
+  const auth = useAuth((state) => state.data);
 
   if (!auth) return <Navigate to="/login" />;
 
