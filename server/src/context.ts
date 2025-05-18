@@ -1,7 +1,7 @@
 import { createContext } from "./utils/socketServer";
-import { User } from "./database";
 import jwt from "jsonwebtoken";
 import { SecertKey } from "./constants";
+import { User } from "./services";
 
 export const baseContext = createContext((socket) => {
   return {

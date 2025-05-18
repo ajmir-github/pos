@@ -1,48 +1,48 @@
-import { Db, MongoClient } from "mongodb";
+import { MongoClient, ObjectId, ServerApiVersion } from "mongodb";
+import { DatabaseURL, DatabaseName } from "../constants";
 import {
-  UserCollection,
-  TableCollection,
-  TabCollection,
-  OrderCollection,
-  OrderItemCollection,
-  PaymentCollection,
-  ItemCollection,
-  ModifierCollection,
-  ModifierOptionCollection,
-  CategoryCollection,
-  ColorCollection,
-  PrinterCollection,
+  Item,
+  User,
+  Category,
+  Color,
+  Modifier,
+  ModifierOption,
+  Order,
+  OrderItem,
+  Payment,
+  Printer,
+  Tab,
+  Table,
 } from "./types";
 
-let db: Db;
+export const client = new MongoClient(DatabaseURL, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  },
+});
+export const database = client.db(DatabaseName);
+export const collection = {
+  users: database.collection<User<ObjectId>>("users"),
+  items: database.collection<Item<ObjectId>>("items"),
+  modifiers: database.collection<Modifier<ObjectId>>("modifiers"),
+  modifierOptions:
+    database.collection<ModifierOption<ObjectId>>("modifierOptions"),
+  colors: database.collection<Color<ObjectId>>("colors"),
+  categories: database.collection<Category<ObjectId>>("categories"),
+  printers: database.collection<Printer<ObjectId>>("printers"),
+  tables: database.collection<Table<ObjectId>>("tables"),
+  tabs: database.collection<Tab<ObjectId>>("tabs"),
+  orders: database.collection<Order<ObjectId>>("orders"),
+  orderItems: database.collection<OrderItem<ObjectId>>("orderItems"),
+  payments: database.collection<Payment<ObjectId>>("payments"),
+};
 
-export async function initDb(uri: string, dbName: string = "Dev") {
-  const client = new MongoClient(uri);
-  await client.connect();
-  db = client.db(dbName);
-  console.log("--- MongoDB connected:", dbName);
-}
-
-export function getDb(): Db {
-  if (!db) throw new Error("+++ Database not initialized");
-  return db;
-}
-
-export function getCollections() {
-  const db = getDb();
-
+export function withId<T extends object>(doc: T) {
+  const _id = new ObjectId();
   return {
-    users: db.collection<UserCollection>("users"),
-    items: db.collection<ItemCollection>("items"),
-    modifiers: db.collection<ModifierCollection>("modifiers"),
-    modifierOptions: db.collection<ModifierOptionCollection>("modifierOptions"),
-    colors: db.collection<ColorCollection>("colors"),
-    categories: db.collection<CategoryCollection>("categories"),
-    printers: db.collection<PrinterCollection>("printers"),
-    tables: db.collection<TableCollection>("tables"),
-    tabs: db.collection<TabCollection>("tabs"),
-    orders: db.collection<OrderCollection>("orders"),
-    orderItems: db.collection<OrderItemCollection>("orderItems"),
-    payments: db.collection<PaymentCollection>("payments"),
+    _id,
+    ...doc,
   };
 }

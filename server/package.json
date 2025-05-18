@@ -14,7 +14,6 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@prisma/client": "^6.7.0",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
@@ -35,7 +34,6 @@
     "@types/lodash": "^4.17.16",
     "@types/node": "^22.10.2",
     "nodemon": "^3.1.9",
-    "prisma": "^6.7.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.2"
   },

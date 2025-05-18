@@ -1,12 +1,14 @@
-import { Document, WithId, ObjectId } from "mongodb";
+import { ObjectId } from "mongodb";
 
-type Doc = WithId<Document>;
-type DocWithTracker = Doc & {
-  createdBy: ObjectId;
+interface Document<Id = ObjectId> {
+  _id: Id;
+  deletedAt?: Date;
+}
+interface DocumentWithTracker<Id = ObjectId> extends Document<Id> {
+  createdBy: Id;
   createdAt: Date;
   updatedAt: Date;
-  deletedAt?: Date;
-};
+}
 
 export enum UserRole {
   admin = "admin",
@@ -16,56 +18,56 @@ export enum UserRole {
   kitchen = "kitchen",
 }
 
-export interface UserCollection extends Doc {
+export interface User<Id = ObjectId> extends Document<Id> {
   username: string;
   password: string;
   fullName: string;
   role: UserRole;
+  deletedAt?: Date;
 }
 
-export interface ColorCollection extends Doc {
+export interface Color<Id = ObjectId> extends Document<Id> {
   name: string;
   class: string;
 }
 
-export interface CategoryCollection extends Doc {
+export interface Category<Id = ObjectId> extends Document<Id> {
   name: string;
-  level: number;
-  subCategories: CategoryCollection[];
+  order?: number;
 }
 
-export interface ModifierOptionCollection extends Doc {
+export interface ModifierOption<Id = ObjectId> extends Document<Id> {
   name: string;
   price: number;
 }
 
-export interface ModifierCollection extends Doc {
+export interface Modifier<Id = ObjectId> extends Document<Id> {
   name: string;
   multiple: boolean;
   required: boolean;
-  options: ObjectId[];
+  options: Id[];
 }
 
-export interface ItemCollection extends Doc {
+export interface Item<Id = ObjectId> extends Document<Id> {
   name: string;
   price: number;
-  color: ObjectId;
-  category: ObjectId;
+  color: Id;
+  category: Id;
 }
 
-enum DiscountType {
+export enum DiscountType {
   unset = "unset",
   fixed = "fixed",
   percentage = "percentage",
 }
 
-enum TableStatus {
+export enum TableStatus {
   open = "open",
   closed = "closed",
   paying = "paying",
 }
 
-export interface TableCollection extends DocWithTracker {
+export interface Table<Id = ObjectId> extends DocumentWithTracker<Id> {
   number: number;
   status: TableStatus;
   discount?: {
@@ -73,10 +75,10 @@ export interface TableCollection extends DocWithTracker {
     value: number;
   };
   total: number;
-  tabs: ObjectId[];
+  tabs: Id[];
 }
 
-export interface TabCollection extends DocWithTracker {
+export interface Tab<Id = ObjectId> extends DocumentWithTracker<Id> {
   number: number;
   description?: string;
   total: number;
@@ -84,7 +86,7 @@ export interface TabCollection extends DocWithTracker {
     type: DiscountType;
     value: number;
   };
-  orders: ObjectId[];
+  orders: Id[];
 }
 
 enum OrderStatus {
@@ -93,21 +95,21 @@ enum OrderStatus {
   cancelled = "cancelled",
 }
 
-export interface OrderCollection extends DocWithTracker {
+export interface Order<Id = ObjectId> extends DocumentWithTracker<Id> {
   status: OrderStatus;
-  tab: ObjectId;
-  sentBy?: ObjectId;
-  cancelledBy?: ObjectId;
-  items: ObjectId[];
+  tab: Id;
+  sentBy?: Id;
+  cancelledBy?: Id;
+  items: Id[];
 }
 
-export interface OrderItemCollection extends DocWithTracker {
+export interface OrderItem<Id = ObjectId> extends DocumentWithTracker<Id> {
   quantity: number;
   price: number;
   total: number;
-  order: ObjectId;
-  item: ObjectId;
-  modifiers: ObjectId[];
+  order: Id;
+  item: Id;
+  modifiers: Id[];
 }
 
 export enum PaymentMethod {
@@ -115,21 +117,21 @@ export enum PaymentMethod {
   card = "card",
   mixed = "mixed",
 }
-export interface PaymentCollection extends DocWithTracker {
-  tab: ObjectId;
+export interface Payment<Id = ObjectId> extends DocumentWithTracker<Id> {
+  tab: Id;
   method: PaymentMethod;
   amountCash: number;
   amountCard: number;
   total: number;
 }
 
-export interface PrinterCollection extends Doc {
+export interface Printer<Id = ObjectId> extends Document<Id> {
   name: string;
   identitifier: string;
-  categories: ObjectId[];
-  users: ObjectId[];
-  tabs: ObjectId[];
-  tables: ObjectId[];
+  categories: Id[];
+  users: Id[];
+  tabs: Id[];
+  tables: Id[];
   isActive: boolean;
-  onFallback: ObjectId;
+  onFallback: Id;
 }
