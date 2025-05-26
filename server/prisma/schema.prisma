@@ -12,9 +12,14 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider = "sqlite"
+  url      = "file:../source.db"
 }
+
+// datasource db {
+//   provider = "postgresql"
+//   url      = env("DATABASE_URL")
+// }
 
 // -------------------- Section One: User Model 
 
@@ -122,6 +127,7 @@ model Table {
   discountType  DiscountType @default(unset)
   discountValue Float        @default(0)
   total         Float
+  totolOfTabs   Float
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
   deletedAt     DateTime?
@@ -133,19 +139,22 @@ model Table {
 }
 
 model Tab {
-  id          String    @id @default(uuid())
-  number      Int
-  description String?
-  total       Float
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  deletedAt   DateTime?
+  id            String       @id @default(uuid())
+  number        Int
+  description   String?
+  discountType  DiscountType @default(unset)
+  discountValue Float        @default(0)
+  totolOfItems  Float
+  total         Float
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  deletedAt     DateTime?
   // relationships
-  createdById String
-  createdBy   User      @relation(fields: [createdById], references: [id])
-  tableId     String
-  table       Table     @relation(fields: [tableId], references: [id])
-  orders      Order[]
+  createdById   String
+  createdBy     User         @relation(fields: [createdById], references: [id])
+  tableId       String
+  table         Table        @relation(fields: [tableId], references: [id])
+  orders        Order[]
 }
 
 enum OrderStatus {
@@ -157,6 +166,7 @@ enum OrderStatus {
 model Order {
   id        String      @id @default(uuid())
   status    OrderStatus @default(drafted)
+  total     Float
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt
   deletedAt DateTime?
@@ -177,11 +187,11 @@ model OrderItem {
   deletedAt DateTime?
 
   // relationships
-  orderId         String
-  order           Order            @relation(fields: [orderId], references: [id])
-  itemId          String
-  item            Item             @relation(fields: [itemId], references: [id])
-  modifierOptions ModifierOption[] @relation("modifierOptionsOnOrderItem") // many-to-many
+  orderId String
+  order   Order            @relation(fields: [orderId], references: [id])
+  itemId  String
+  item    Item             @relation(fields: [itemId], references: [id])
+  options ModifierOption[] @relation("modifierOptionsOnOrderItem") // many-to-many
 }
 
 enum PaymentMethod {
