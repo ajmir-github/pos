@@ -29,7 +29,6 @@ export const collection = {
   modifiers: database.collection<Modifier<ObjectId>>("modifiers"),
   modifierOptions:
     database.collection<ModifierOption<ObjectId>>("modifierOptions"),
-  colors: database.collection<Color<ObjectId>>("colors"),
   categories: database.collection<Category<ObjectId>>("categories"),
   printers: database.collection<Printer<ObjectId>>("printers"),
   tables: database.collection<Table<ObjectId>>("tables"),
@@ -38,11 +37,3 @@ export const collection = {
   orderItems: database.collection<OrderItem<ObjectId>>("orderItems"),
   payments: database.collection<Payment<ObjectId>>("payments"),
 };
-
-export function withId<T extends object>(doc: T) {
-  const _id = new ObjectId();
-  return {
-    _id,
-    ...doc,
-  };
-}
