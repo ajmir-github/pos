@@ -87,7 +87,7 @@ model Modifier {
   deletedAt DateTime?
   // relationships
   options   ModifierOption[] @relation("ModifierOptionsOnModifers") // many-to-many
-  items     Item[]
+  items     Item[]           @relation("ModifiersOnItems")
 }
 
 model Item {
@@ -103,7 +103,7 @@ model Item {
   categoryId String
   category   Category    @relation(fields: [categoryId], references: [id])
   orderItems OrderItem[]
-  modifiers  Modifier[]
+  modifiers  Modifier[]  @relation("ModifiersOnItems")
 }
 
 // -------------------- Section Three: Tab Model 
@@ -127,7 +127,7 @@ model Table {
   discountType  DiscountType @default(unset)
   discountValue Float        @default(0)
   total         Float
-  totolOfTabs   Float
+  totalOfTabs   Float
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
   deletedAt     DateTime?
@@ -144,7 +144,7 @@ model Tab {
   description   String?
   discountType  DiscountType @default(unset)
   discountValue Float        @default(0)
-  totolOfItems  Float
+  totalOfItems  Float
   total         Float
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
@@ -215,4 +215,27 @@ model Payment {
   // Relationships
   userId String
   user   User   @relation(fields: [userId], references: [id])
+}
+
+enum PrinterTargetType {
+  All
+  User
+  Category
+  Table
+  Item
+}
+
+model Printer {
+  id         String            @id @default(uuid())
+  name       String
+  targetType PrinterTargetType @default(All)
+  targetRef  String? // user id, category id, table number
+  location   String?
+  ip         String?
+  isActive   Boolean           @default(true)
+  deletedAt  DateTime?
+
+  // relationships
+
+  @@index([name])
 }

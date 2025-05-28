@@ -172,7 +172,7 @@ exports.Prisma.TableScalarFieldEnum = {
   discountType: 'discountType',
   discountValue: 'discountValue',
   total: 'total',
-  totolOfTabs: 'totolOfTabs',
+  totalOfTabs: 'totalOfTabs',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   deletedAt: 'deletedAt',
@@ -185,7 +185,7 @@ exports.Prisma.TabScalarFieldEnum = {
   description: 'description',
   discountType: 'discountType',
   discountValue: 'discountValue',
-  totolOfItems: 'totolOfItems',
+  totalOfItems: 'totalOfItems',
   total: 'total',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
@@ -229,6 +229,17 @@ exports.Prisma.PaymentScalarFieldEnum = {
   userId: 'userId'
 };
 
+exports.Prisma.PrinterScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  targetType: 'targetType',
+  targetRef: 'targetRef',
+  location: 'location',
+  ip: 'ip',
+  isActive: 'isActive',
+  deletedAt: 'deletedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -270,6 +281,14 @@ exports.PaymentMethod = exports.$Enums.PaymentMethod = {
   mixed: 'mixed'
 };
 
+exports.PrinterTargetType = exports.$Enums.PrinterTargetType = {
+  All: 'All',
+  User: 'User',
+  Category: 'Category',
+  Table: 'Table',
+  Item: 'Item'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   Color: 'Color',
@@ -281,7 +300,8 @@ exports.Prisma.ModelName = {
   Tab: 'Tab',
   Order: 'Order',
   OrderItem: 'OrderItem',
-  Payment: 'Payment'
+  Payment: 'Payment',
+  Printer: 'Printer'
 };
 
 /**

@@ -222,13 +222,14 @@ enum PrinterTargetType {
   User
   Category
   Table
+  Item
 }
 
 model Printer {
   id         String            @id @default(uuid())
   name       String
   targetType PrinterTargetType @default(All)
-  targetRef  String // user id, category id, table number
+  targetRef  String? // user id, category id, table number
   location   String?
   ip         String?
   isActive   Boolean           @default(true)
